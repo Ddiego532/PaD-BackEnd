@@ -73,5 +73,6 @@ class NewsScrapper:
     def find_news(self):
         pass
 
-    def get_robots(self):
-        return self.__robot_parser
+    def get_sitemaps(self):
+        # can return none.
+        return self.__robot_parser.get_sitemaps()
