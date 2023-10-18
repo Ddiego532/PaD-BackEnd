@@ -30,7 +30,7 @@ class Scrapper:
         # conn was posible.
         return True
     
-    def get_articles_links(self):
+    def get_links(self, mode : str = "article"):
         # should work for la tercera.
         soup = BeautifulSoup(self.root_content, "html.parser", from_encoding="UTF-8")
         
@@ -68,6 +68,9 @@ class Scrapper:
             self.cached_urls.add(link)
             
             yield news_text
+
+    def get_relevant_data(self):
+        pass
         
     def scrape_news(self):
         self._start_connection()

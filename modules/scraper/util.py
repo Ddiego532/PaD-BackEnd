@@ -36,10 +36,12 @@ def is_valid(url, seed_url):
     parsed = urlparse(url)
     return (parsed.netloc is not None) and parsed.netloc == seed_url
 
+def get_base_url(url : str):
+    parse = urlparse(url)
+    return parse.netloc
+
 def get_joined_url(url, rel_path):
     return urljoin(url, rel_path)
 
 def get_decoded_text(content : str):
     return content.encode("utf-8").decode("unicode-escape")
-
-# print(urljoin("http://valve.com", "half-life/gordon-freeman"))
