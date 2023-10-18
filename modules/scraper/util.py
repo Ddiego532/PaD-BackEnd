@@ -38,7 +38,7 @@ def is_valid(url, seed_url):
 
 def get_base_url(url : str):
     parse = urlparse(url)
-    return parse.netloc
+    return f"{parse.scheme}://{parse.netloc}"
 
 def get_joined_url(url, rel_path):
     return urljoin(url, rel_path)

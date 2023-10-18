@@ -55,15 +55,17 @@ class RobotsParser:
 
 
 class NewsScrapper:
-    def __init__(self, url : str, force_sitemaps : bool = False) -> None:
+    def __init__(self, url : str) -> None:
+        # should be like latercera.cl/
         self.seed_url = get_base_url(url)
+        self.url = url
 
         # try catch goofy aaa thing.
         if self.seed_url is None:
             raise ValueError(f"The seed URL has a null value.")
         
         # imagine using this, but we are doing it for the xml.
-        robot_parser = RobotsParser(self.seed_url)
+        self.__robot_parser = RobotsParser(self.seed_url)
 
     def get_links(self):
         pass
@@ -71,7 +73,5 @@ class NewsScrapper:
     def find_news(self):
         pass
 
-robot = RobotsParser("https://t13.cl")
-
-# print(robot.get_disallowed_links())
-print(robot.get_site_data())
+    def get_robots(self):
+        return self.__robot_parser
