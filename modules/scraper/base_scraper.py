@@ -10,6 +10,7 @@ class RobotsParser:
         self.__base_url = url
         # self.disallowed_links : list = None
         self.site_data = {}
+        self.__get_data()
 
     def __get_data(self):
         robots_txt = create_conn(f"{self.__base_url}/robots.txt", 0)
@@ -24,7 +25,9 @@ class RobotsParser:
         for data in stripped_newlines:
             # no need to iterate.
             if len(data) <= 0 or data.startswith("#"): continue
-            mapped = data.split(":")
+
+            # split one only.
+            mapped = data.split(":", 1)
 
             # this is the thing we need.
             key, value = mapped[0], mapped[1].strip()
@@ -32,20 +35,20 @@ class RobotsParser:
             if not key in self.site_data:
                 self.site_data[key] : list = []
 
-
             self.site_data[key].append(value)
 
-        print(self.site_data)
-
     def get_disallowed_links(self):        
-        self.__get_data()
-
+        return self.site_data.get("Disallow", None)
+    
     def get_sitemaps(self):
-        pass
+        return self.site_data.get("Sitemap", None)
+    
+    def get_user_agents(self):
+        return self.site_data.get("User-agent", None)
 
 
 class NewsScrapper:
-    def __init__(self, url) -> None:
+    def __init__(self, url : str, force_sitemaps : bool = False) -> None:
         self.seed_url = get_base_url(url)
 
         # try catch goofy aaa thing.
@@ -60,6 +63,7 @@ class NewsScrapper:
     def find_news(self):
         pass
 
-robot = RobotsParser("http://www.elmostrador.cl")
+robot = RobotsParser("https://t13.cl")
 
-robot.get_disallowed_links()
+# print(robot.get_disallowed_links())
+print(robot.get_sitemaps())
