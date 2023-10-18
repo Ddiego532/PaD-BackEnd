@@ -1,12 +1,13 @@
+# atm we use the general politics.
 ELMOSTRADOR = {
-    "url": "https://www.elmostrador.cl/noticias/pais/",
+    "url": "https://www.elmostrador.cl/categoria/politica/",
     "tag": "section",
     "id": "claves",
 }
 
 BIOBIOCHILE = {
     # how...
-    "url": "https://www.biobiochile.cl/lista/categorias/nacional",
+    "url": "https://www.biobiochile.cl/lista/tag/politica",
     "tag": "div",
     # should be only one.
     "class": "section-body",
