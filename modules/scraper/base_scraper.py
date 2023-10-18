@@ -10,9 +10,9 @@ class RobotsParser:
         self.__base_url = url
         # self.disallowed_links : list = None
         self.site_data = {}
-        self.__get_data()
+        self.__request_data()
 
-    def __get_data(self):
+    def __request_data(self) -> None:
         robots_txt = create_conn(f"{self.__base_url}/robots.txt", 0)
 
         # FIXME: There are some sites without this file, so we need to add a better check.
@@ -30,21 +30,28 @@ class RobotsParser:
             mapped = data.split(":", 1)
 
             # this is the thing we need.
-            key, value = mapped[0], mapped[1].strip()
+            key = mapped[0]
+
+            # we don't care about this.
+            if key == "Allow": continue
+            value = mapped[1].strip()
 
             if not key in self.site_data:
                 self.site_data[key] : list = []
 
             self.site_data[key].append(value)
 
-    def get_disallowed_links(self):        
+    def get_disallowed_links(self) -> list:        
         return self.site_data.get("Disallow", None)
     
-    def get_sitemaps(self):
+    def get_sitemaps(self) -> list:
         return self.site_data.get("Sitemap", None)
     
-    def get_user_agents(self):
+    def get_user_agents(self) -> list:
         return self.site_data.get("User-agent", None)
+    
+    def get_site_data(self) -> dict:
+        return self.site_data
 
 
 class NewsScrapper:
@@ -55,6 +62,7 @@ class NewsScrapper:
         if self.seed_url is None:
             raise ValueError(f"The seed URL has a null value.")
         
+        # imagine using this, but we are doing it for the xml.
         robot_parser = RobotsParser(self.seed_url)
 
     def get_links(self):
@@ -66,4 +74,4 @@ class NewsScrapper:
 robot = RobotsParser("https://t13.cl")
 
 # print(robot.get_disallowed_links())
-print(robot.get_sitemaps())
+print(robot.get_site_data())
