@@ -27,14 +27,15 @@ class RobotsParser:
             mapped = data.split(":")
 
             # this is the thing we need.
-            key, value = mapped[0], mapped[1]
+            key, value = mapped[0], mapped[1].strip()
 
-            if not isinstance(self.site_data[key], list):
-                self.site_data[key] = list()
+            if not key in self.site_data:
+                self.site_data[key] : list = []
+
 
             self.site_data[key].append(value)
 
-            # print(key)
+        print(self.site_data)
 
     def get_disallowed_links(self):        
         self.__get_data()
