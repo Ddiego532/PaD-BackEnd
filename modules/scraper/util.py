@@ -8,6 +8,7 @@ SUCCESFUL_CODE = 200
 
 # Can return none.
 # URL can't be empty.
+# TODO: Add POST requests.
 def create_conn(url : str, delay : float = 0):
     try:
         conn = req_get(url)
@@ -31,10 +32,13 @@ def create_conn(url : str, delay : float = 0):
 
     return None
 
+# TODO: Merge this.
+def is_absolute(url : str):
+    return bool(urlparse(url).netloc)
+
 # Check if its valid.
 def is_valid(url, seed_url):
-    parsed = urlparse(url)
-    return (parsed.netloc is not None) and parsed.netloc == seed_url
+    return is_absolute(url) and get_base_url(url) == seed_url
 
 def get_base_url(url : str):
     parse = urlparse(url)

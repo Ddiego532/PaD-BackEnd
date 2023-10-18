@@ -1,6 +1,7 @@
 # atm we use the general politics.
 ELMOSTRADOR = {
-    "url": "https://www.elmostrador.cl/categoria/politica/",
+    # reverted this guy again.
+    "url": "https://www.elmostrador.cl/categoria/pais/",
     "tag": "section",
     "id": "claves",
 }
@@ -20,3 +21,6 @@ LATERCERA = {
     # like the one before.
     "class": "top-mainy",
 }
+
+### NEWS SAVING CRITERIAS ####
+# TODO: Add.

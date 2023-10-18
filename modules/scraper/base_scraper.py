@@ -1,5 +1,6 @@
-from util import create_conn, get_base_url
+from util import create_conn, get_base_url, is_valid, is_absolute
 from bs4 import BeautifulSoup
+import criterias
 
 class NewsSaver:
     pass
@@ -54,11 +55,22 @@ class RobotsParser:
         return self.site_data
 
 
-class NewsScrapper:
-    def __init__(self, url : str) -> None:
+class BaseScrapper:
+    def __init__(self, criteria : dict) -> None:
+        # private thing as we are scraping based on this.
+        # protected as childs require it.
+        self.__criteria = criteria
+        self.url = criteria.get("url", None)
+        self.target_tag = criteria.get("tag", None)
+
+        self.id = criteria.get("id", None)
+
+        if self.id is None:
+            self.id = criteria.get("class", None)
+            self._has_id = False
+
         # should be like latercera.cl/
-        self.seed_url = get_base_url(url)
-        self.url = url
+        self.seed_url = get_base_url(self.url)
 
         # try catch goofy aaa thing.
         if self.seed_url is None:
@@ -66,6 +78,10 @@ class NewsScrapper:
         
         # imagine using this, but we are doing it for the xml.
         self.__robot_parser = RobotsParser(self.seed_url)
+        self.cached_links = set()
+
+    def is_valid_sublink(self, link : str):
+        return is_valid(link, self.seed_url)
 
     def get_links(self):
         pass
@@ -73,6 +89,41 @@ class NewsScrapper:
     def find_news(self):
         pass
 
+    def start_scraping(self):
+        pass
+
+    def is_valid_link(self):
+        pass
+
+    def should_connect(self, link : str):
+        pass
+
     def get_sitemaps(self):
         # can return none.
         return self.__robot_parser.get_sitemaps()
+
+LATERCERA_CRIT = criterias.LATERCERA
+    
+class LaTerceraScrapper(BaseScrapper):
+    def __init__(self) -> None:
+        super().__init__(LATERCERA_CRIT)
+
+    def get_links(self):
+        conn = create_conn(self.url, 0)
+        soup = BeautifulSoup(conn.content, "html.parser")
+        # the important part.
+        element = soup.find(self.target_tag, {"id" if self._has_id else "class": self.id})
+        
+        for link in element.find_all("a"):
+            href = link.get("href")
+
+            if not is_absolute(href):
+                href = f"{self.seed_url}{href}"
+
+            if not self.is_valid_sublink(href): continue
+
+            print(f"{href}")
+        
+latercera = LaTerceraScrapper()
+print(latercera.get_sitemaps())
+latercera.get_links()
