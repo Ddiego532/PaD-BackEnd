@@ -5,7 +5,8 @@ ELMOSTRADOR = {
     "tag": "section",
     "id": "claves",
     # num goes here.
-    "explore_path": "categoria/pais/page/",
+    "explore_path": "categoria/pais/page/page_num/",
+    "forbidden_paths": ["/autores/", "/autor/", "/page/"],
 
     "news_body": {
 
@@ -27,7 +28,7 @@ LATERCERA = {
     # like the one before.
     "class": "top-mainy",
     # this differs
-    "explore_path": "categoria/politica/page/",
+    "explore_path": "categoria/politica/page/page_num/",
 }
 
 # i should guess biobio and cnn are somewhat kinda similar.
@@ -35,6 +36,14 @@ CNNCHILE = {
     "url": "https://www.cnnchile.com/tag/politica/",
     "tag": "div",
     "class": "inner-list",
-    "explore_path": "tag/politica/page/",
-    "forbidden_paths": ["lodijeronencnn", "opinion/", "programas-completos", "mundo/", "tag/"]
+    "explore_path": "tag/politica/page/page_num/",
+    "forbidden_paths": ["/lodijeronencnn/", "/opinion/", "/programas-completos/", "/mundo/", "/tag/"]
+}
+
+MEGANOTICIAS = {
+    "url": "https://www.meganoticias.cl/temas/politica/",
+    "tag": "div",
+    "class": "notas",
+    "explore_path": "temas/politica/?page=page_num",
+    "forbidden_paths": ["/mundo/", "/temas/"]
 }
