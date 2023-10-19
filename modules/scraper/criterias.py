@@ -4,6 +4,9 @@ ELMOSTRADOR = {
     "url": "https://www.elmostrador.cl/categoria/pais/",
     "tag": "section",
     "id": "claves",
+    "news_body": {
+
+    }
 }
 
 BIOBIOCHILE = {
@@ -12,6 +15,7 @@ BIOBIOCHILE = {
     "tag": "div",
     # should be only one.
     "class": "section-body",
+    "forbidden_paths" : ["/autores/", "/biobiotv/", "/opinion/", "/especial/"],
 }
 
 LATERCERA = {
@@ -20,7 +24,8 @@ LATERCERA = {
     "tag": "section",
     # like the one before.
     "class": "top-mainy",
-}
 
-### NEWS SAVING CRITERIAS ####
-# TODO: Add.
+    "news_body": {
+        
+    }
+}

@@ -63,6 +63,8 @@ class BaseScrapper:
         self.url = criteria.get("url", None)
         self.target_tag = criteria.get("tag", None)
 
+        self.conn_delay = 0
+
         self.id = criteria.get("id", None)
 
         if self.id is None:
@@ -80,35 +82,22 @@ class BaseScrapper:
         self.__robot_parser = RobotsParser(self.seed_url)
         self.cached_links = set()
 
+    def set_connection_delay(self, delay : int):
+        self.conn_delay = delay
+
     def is_valid_sublink(self, link : str):
         return is_valid(link, self.seed_url)
-
-    def get_links(self):
-        pass
-
-    def find_news(self):
-        pass
-
-    def start_scraping(self):
-        pass
-
-    def is_valid_link(self):
-        pass
-
-    def should_connect(self, link : str):
-        pass
-
-    def get_sitemaps(self):
-        # can return none.
-        return self.__robot_parser.get_sitemaps()
-
-LATERCERA_CRIT = criterias.LATERCERA
     
-class LaTerceraScrapper(BaseScrapper):
-    def __init__(self) -> None:
-        super().__init__(LATERCERA_CRIT)
+    def is_forbidden_sublink(self, link : str):
+        for path in self.__criteria["forbidden_paths"]:
+            # is there a better way to do this?
+            if path in link: 
+                return True
+            
+        return False
 
-    def get_links(self):
+    # this could vary in terms of fetching.
+    def get_link_by_soup(self, max_level : int = 1):
         conn = create_conn(self.url, 0)
         soup = BeautifulSoup(conn.content, "html.parser")
         # the important part.
@@ -117,13 +106,37 @@ class LaTerceraScrapper(BaseScrapper):
         for link in element.find_all("a"):
             href = link.get("href")
 
+            # has weird paths.
+            if (href is None) or self.is_forbidden_sublink(href): continue
+
             if not is_absolute(href):
                 href = f"{self.seed_url}{href}"
-
+            
+            # doesn't match with the seed url.
             if not self.is_valid_sublink(href): continue
 
-            print(f"{href}")
-        
-latercera = LaTerceraScrapper()
-print(latercera.get_sitemaps())
-latercera.get_links()
+            # only news.
+
+    def find_news(self):
+        pass
+
+    def start_scraping(self):
+        pass
+
+    def get_sitemaps(self):
+        # can return none.
+        return self.__robot_parser.get_sitemaps()
+
+LATERCERA_CRIT = criterias.LATERCERA
+BIOBIO = criterias.BIOBIOCHILE
+    
+class LaTerceraScrapper(BaseScrapper):
+    def __init__(self) -> None:
+        super().__init__(LATERCERA_CRIT)
+
+class BioBioScrapper(BaseScrapper):
+    def __init__(self):
+        super().__init__(BIOBIO)
+
+biobio = BioBioScrapper()
+biobio.get_link_by_soup()
