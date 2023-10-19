@@ -8,7 +8,7 @@ ELMOSTRADOR = {
     "explore_path": "categoria/pais/page/",
 
     "news_body": {
-        
+
     }
 }
 
@@ -22,9 +22,6 @@ BIOBIOCHILE = {
 }
 
 LATERCERA = {
-    # workaround be like
-    # will redirect if we use the category path.
-    # will reuse the page 1.
     "url": "https://www.latercera.com/categoria/politica/page/1",
     "tag": "section",
     # like the one before.

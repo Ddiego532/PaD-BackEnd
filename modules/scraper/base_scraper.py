@@ -5,7 +5,7 @@ import criterias
 # we only allocate it for one time.
 EMPTY_LIST = []
 
-class NewsSaver:
+class JSONCreator:
     pass
 
 # basically a robots.txt checker.
@@ -99,7 +99,14 @@ class BaseScrapper:
             
         return False
     
-    def __iterate_sublinks(self, soup: BeautifulSoup):
+    def create_json_file(self):
+        pass
+
+    # force to go to a single url.
+    def __connect_and_add_sublinks(self, url : str):
+        conn = create_conn(url, self.conn_delay)
+        soup = BeautifulSoup(conn.content, "html.parser")
+
         element = soup.find(self.target_tag, {"id" if self._has_id else "class": self.id})
     
         for link in element.find_all("a"):
@@ -116,10 +123,8 @@ class BaseScrapper:
 
             self.cached_links.add(href)
 
-    def get_links_by_page(self):
-        conn = create_conn(self.seed_url, self.conn_delay)
-        soup = BeautifulSoup(conn.content, "html.parser")
-        self.__iterate_sublinks(soup)
+    def get_sublinks_singlepage(self):
+        return self.__connect_and_add_sublinks(self.url)
 
     # this could vary in terms of fetching.
     # TODO: Implement it for another news sites.
@@ -127,7 +132,7 @@ class BaseScrapper:
         explore_path = self.__criteria.get("explore_path", None)
     
         if explore_path is None: 
-            return self.get_links_by_page()
+            return self.get_sublinks_singlepage()
         
         # below 1 bad!!!
         max_level = max(max_level, 1)
@@ -137,11 +142,9 @@ class BaseScrapper:
 
         for i in range(1, max_level + 1):
             numpath = f"{fullpath}{i}"
-            conn = create_conn(numpath, self.conn_delay)
-            print("GOING TO: ", numpath)
-            soup = BeautifulSoup(conn.content, "html.parser")
-            self.__iterate_sublinks(soup)
-
+            print("Going to: ", numpath)
+            self.__connect_and_add_sublinks(fullpath)
+        
     def get_links_by_sitemap(self):
         sitemap = self.get_sitemaps()
         if not sitemap: return
@@ -154,16 +157,7 @@ LATERCERA_CRIT = criterias.LATERCERA
 BIOBIO = criterias.BIOBIOCHILE
 
 # we prolly not need these, these are needed when they are special cases.
-class LaTerceraScrapper(BaseScrapper):
-    def __init__(self) -> None:
-        super().__init__(LATERCERA_CRIT)
-
-class BioBioScrapper(BaseScrapper):
-    def __init__(self):
-        super().__init__(BIOBIO)
-
-# cnnscrapper = BaseScrapper(criterias.CNNCHILE)
-# cnnscrapper.get_links_by_exploring(5)
-
 latercera = BaseScrapper(criterias.LATERCERA)
 latercera.get_links_by_exploring(10)
+
+latercera.get_sublinks_singlepage()
