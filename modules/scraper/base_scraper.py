@@ -57,7 +57,6 @@ class RobotsParser:
     def get_site_data(self) -> dict:
         return self.site_data
 
-
 class BaseScrapper:
     def __init__(self, criteria : dict) -> None:
         # private thing as we are scraping based on this.
@@ -99,14 +98,10 @@ class BaseScrapper:
                 return True
             
         return False
-    # this could vary in terms of fetching.
-    # we don't need recursion.
-    def get_links_by_soup(self, max_level : int = 1):
-        conn = create_conn(self.url, self.conn_delay)
-        soup = BeautifulSoup(conn.content, "html.parser")
-        # the important part.
+    
+    def __iterate_sublinks(self, soup: BeautifulSoup):
         element = soup.find(self.target_tag, {"id" if self._has_id else "class": self.id})
-        
+    
         for link in element.find_all("a"):
             href = link.get("href")
 
@@ -119,21 +114,37 @@ class BaseScrapper:
             # doesn't match with the seed url.
             if not self.is_valid_sublink(href): continue
 
-            print(href)
+            self.cached_links.add(href)
 
-            # only news.
+    def get_links_by_page(self):
+        conn = create_conn(self.seed_url, self.conn_delay)
+        soup = BeautifulSoup(conn.content, "html.parser")
+        self.__iterate_sublinks(soup)
+
+    # this could vary in terms of fetching.
+    # TODO: Implement it for another news sites.
+    def get_links_by_exploring(self, max_level : int = 1):
+        explore_path = self.__criteria.get("explore_path", None)
+    
+        if explore_path is None: 
+            return self.get_links_by_page()
+        
+        # below 1 bad!!!
+        max_level = max(max_level, 1)
+
+        print(self.seed_url, explore_path)
+        fullpath = f"{self.seed_url}/{explore_path}"
+
+        for i in range(1, max_level + 1):
+            numpath = f"{fullpath}{i}"
+            conn = create_conn(numpath, self.conn_delay)
+            print("GOING TO: ", numpath)
+            soup = BeautifulSoup(conn.content, "html.parser")
+            self.__iterate_sublinks(soup)
 
     def get_links_by_sitemap(self):
         sitemap = self.get_sitemaps()
         if not sitemap: return
-        
-
-
-    def find_news(self):
-        pass
-
-    def start_scraping(self):
-        pass
 
     def get_sitemaps(self):
         # can return none.
@@ -151,8 +162,8 @@ class BioBioScrapper(BaseScrapper):
     def __init__(self):
         super().__init__(BIOBIO)
 
-cnnscrapper = BaseScrapper(criterias.CNNCHILE)
-cnnscrapper.get_links_by_soup()
+# cnnscrapper = BaseScrapper(criterias.CNNCHILE)
+# cnnscrapper.get_links_by_exploring(5)
 
-biobio = BioBioScrapper()
-biobio.get_links_by_soup()
+latercera = BaseScrapper(criterias.LATERCERA)
+latercera.get_links_by_exploring(10)

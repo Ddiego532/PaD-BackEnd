@@ -39,5 +39,5 @@ CNNCHILE = {
     "tag": "div",
     "class": "inner-list",
     "explore_path": "tag/politica/page/",
-    "forbidden_paths": ["lodijeronencnn", "opinion/", "programas-completos", "mundo/"]
+    "forbidden_paths": ["lodijeronencnn", "opinion/", "programas-completos", "mundo/", "tag/"]
 }
