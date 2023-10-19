@@ -2,6 +2,9 @@ from util import create_conn, get_base_url, is_valid, is_absolute
 from bs4 import BeautifulSoup
 import criterias
 
+# we only allocate it for one time.
+EMPTY_LIST = []
+
 class NewsSaver:
     pass
 
@@ -89,16 +92,17 @@ class BaseScrapper:
         return is_valid(link, self.seed_url)
     
     def is_forbidden_sublink(self, link : str):
-        for path in self.__criteria["forbidden_paths"]:
-            # is there a better way to do this?
-            if path in link: 
+        forbidden_paths = self.__criteria.get("forbidden_paths", EMPTY_LIST)
+    
+        for path in forbidden_paths:
+            if path in link:
                 return True
             
         return False
-
     # this could vary in terms of fetching.
-    def get_link_by_soup(self, max_level : int = 1):
-        conn = create_conn(self.url, 0)
+    # we don't need recursion.
+    def get_links_by_soup(self, max_level : int = 1):
+        conn = create_conn(self.url, self.conn_delay)
         soup = BeautifulSoup(conn.content, "html.parser")
         # the important part.
         element = soup.find(self.target_tag, {"id" if self._has_id else "class": self.id})
@@ -115,7 +119,15 @@ class BaseScrapper:
             # doesn't match with the seed url.
             if not self.is_valid_sublink(href): continue
 
+            print(href)
+
             # only news.
+
+    def get_links_by_sitemap(self):
+        sitemap = self.get_sitemaps()
+        if not sitemap: return
+        
+
 
     def find_news(self):
         pass
@@ -129,7 +141,8 @@ class BaseScrapper:
 
 LATERCERA_CRIT = criterias.LATERCERA
 BIOBIO = criterias.BIOBIOCHILE
-    
+
+# we prolly not need these, these are needed when they are special cases.
 class LaTerceraScrapper(BaseScrapper):
     def __init__(self) -> None:
         super().__init__(LATERCERA_CRIT)
@@ -138,5 +151,8 @@ class BioBioScrapper(BaseScrapper):
     def __init__(self):
         super().__init__(BIOBIO)
 
+cnnscrapper = BaseScrapper(criterias.CNNCHILE)
+cnnscrapper.get_links_by_soup()
+
 biobio = BioBioScrapper()
-biobio.get_link_by_soup()
+biobio.get_links_by_soup()
