@@ -1,4 +1,5 @@
 # atm we use the general politics.
+# TODO: Swap forbidden_paths to accepted_paths.
 ELMOSTRADOR = {
     # reverted this guy again.
     "url": "https://www.elmostrador.cl/categoria/pais/",
@@ -46,4 +47,14 @@ MEGANOTICIAS = {
     "class": "notas",
     "explore_path": "temas/politica/?page=page_num",
     "forbidden_paths": ["/mundo/", "/temas/"]
+}
+
+# it doesn't let me put 24HORAS for some reason goofy ahh moment.
+TVN_NOTICIAS = {
+    "url": "https://www.24horas.cl/actualidad/politica/",
+    "tag": "div",
+    # FIXME: This can be changed in the future.
+    "class": "row",
+    "explore_path": "actualidad/politica/p/page_num",
+    "forbidden_paths": ["/p/"],
 }

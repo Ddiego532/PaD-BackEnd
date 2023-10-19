@@ -1,5 +1,5 @@
 # Assuming we are only using the GET method.
-from requests import get as req_get, exceptions
+from requests import get as req_get, post as req_post, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
 

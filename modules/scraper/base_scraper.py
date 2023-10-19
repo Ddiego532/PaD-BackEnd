@@ -166,13 +166,9 @@ class BaseScrapper:
 
 LATERCERA_CRIT = criterias.LATERCERA
 BIOBIO = criterias.BIOBIOCHILE
+TVN = criterias.TVN_NOTICIAS
 
-# we prolly not need these, these are needed when they are special cases.
-latercera = BaseScrapper(criterias.MEGANOTICIAS)
-latercera.get_links_by_exploring(10)
+scrap = BaseScrapper(TVN)
+scrap.get_links_by_exploring(10)
 
-cached = latercera.get_news_links()
-
-print(cached, len(cached))
-
-# latercera.get_sublinks_singlepage()
+print(scrap.get_news_links(), len(scrap.get_news_links()))
