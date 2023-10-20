@@ -5,8 +5,16 @@ import criterias
 # we only allocate it for one time.
 EMPTY_LIST = []
 
-class JSONCreator:
-    pass
+class NewsSaver:
+    def __init__(self, crit : dict, source : str):
+        self.news_selector = dict
+        self.source = source
+
+    def set_filename(self):
+        pass
+
+    def save_to_json(self, soup : BeautifulSoup):
+        pass
 
 # basically a robots.txt checker.
 class RobotsParser:
@@ -163,12 +171,12 @@ class BaseScrapper:
     def get_sitemaps(self):
         # can return none.
         return self.__robot_parser.get_sitemaps()
-
+    
 LATERCERA_CRIT = criterias.LATERCERA
 BIOBIO = criterias.BIOBIOCHILE
 TVN = criterias.TVN_NOTICIAS
 
 scrap = BaseScrapper(TVN)
-scrap.get_links_by_exploring(10)
+scrap.get_links_by_exploring(20)
 
 print(scrap.get_news_links(), len(scrap.get_news_links()))

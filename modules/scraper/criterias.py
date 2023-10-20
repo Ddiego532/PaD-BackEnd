@@ -1,5 +1,32 @@
 # atm we use the general politics.
 # TODO: Swap forbidden_paths to accepted_paths.
+
+# EL MOSTRADOR HANDLER.
+ELMOSTRADOR_NEWS_SELECTOR = {
+    "title": {
+        "tag": "h1",
+        "class": "d-the-single__title | common:margin-bottom-25"
+    },
+
+    "date": {
+        "tag": "time",
+        "class": "d-the-single__date | common:margin-bottom-20",
+    },
+
+    "subtitle": {
+        "tag": "p",
+        "class": "d-the-single__excerpt | u-fw-600",
+    },
+
+    "content": {
+        "tag": "div",
+        "class": "d-the-single-wrapper__text"
+    },
+
+    # there are some tags that should be ignored.
+    "ignore_content_identifiers": []
+}
+
 ELMOSTRADOR = {
     # reverted this guy again.
     "url": "https://www.elmostrador.cl/categoria/pais/",
@@ -9,9 +36,7 @@ ELMOSTRADOR = {
     "explore_path": "categoria/pais/page/page_num/",
     "forbidden_paths": ["/autores/", "/autor/", "/page/"],
 
-    "news_body": {
-
-    }
+    "news_selector": ELMOSTRADOR_NEWS_SELECTOR
 }
 
 BIOBIOCHILE = {
