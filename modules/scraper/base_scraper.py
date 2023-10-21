@@ -31,12 +31,8 @@ class BaseScraper:
     def is_forbidden_sublink(self, link : str):
         forbidden_paths = self._criteria.get("forbidden_paths", EMPTY_LIST)
     
-        for path in forbidden_paths:
-            if path in link:
-                return True
-            
-        return False
-    
+        return any(path in link for path in forbidden_paths)
+
     def save_news(self):
         for news_link in self.cached_links:
             conn = create_conn(news_link)

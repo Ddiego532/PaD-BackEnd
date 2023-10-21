@@ -77,3 +77,6 @@ def get_tag(data : dict, soup):
     
     # worst case.
     return None
+
+def are_elements_in_another_list(source_list : list, target_list: list):
+    return any(elem in target_list for elem in source_list)

@@ -128,5 +128,6 @@ TVN_NOTICIAS = {
     "class": "row",
     "explore_path": "actualidad/politica/p/page_num",
     "forbidden_paths": ["/p/"],
-    "news_selector": TVN_SELECTOR
+    "news_selector": TVN_SELECTOR,
+    "ignore_content_ids": ["prontus-card-content"]
 }

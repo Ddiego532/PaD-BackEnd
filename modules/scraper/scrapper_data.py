@@ -1,4 +1,4 @@
-from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute
+from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, are_elements_in_another_list
 from scraper_constants import EMPTY_LIST
 # only for fixing helpers args.
 from bs4 import BeautifulSoup
@@ -97,15 +97,18 @@ class NewsSaver:
         ignorable_ids = sel.get("ignore_content_ids", EMPTY_LIST)
         content_text = ""
 
-        for elem in content.findChildren():
+        # TODO: Fix duplicated text.
+        for elem in content.find_all():
             if elem is None: continue
             id = elem.get("id")
-            class_id = elem.get("class")
+            class_list = elem.get("class")
 
             # ignorable tag, prolly ads related.
-            if id in ignorable_ids or class_id in ignorable_ids: continue
-            text : str = elem.text
-        
+            if (id is not None and id in ignorable_ids) or (class_list is not None and are_elements_in_another_list(class_list, ignorable_ids)): 
+                print(class_list, ignorable_ids)
+                continue
+
+            text : str = elem.text.strip()
             content_text += text
 
         # append this data to dictionary.
@@ -115,3 +118,6 @@ class NewsSaver:
     def save_to_json(self, clear_data : bool = True): 
         with open("test.json", "w", encoding="utf-8") as json_file:
             json.dump(self.saved_data, json_file, ensure_ascii=False, indent=4)
+
+        if clear_data:
+            self.saved_data.clear()
