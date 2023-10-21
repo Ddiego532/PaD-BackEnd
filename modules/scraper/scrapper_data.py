@@ -1,8 +1,28 @@
 from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, are_elements_in_another_list
 from scraper_constants import EMPTY_LIST
 # only for fixing helpers args.
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 import json
+
+def remove_irrelevant_data(soup : Tag, criteria : dict):
+    bad_content : dict = criteria.get("common_irrelevant_tag", None)
+
+    # not removed.
+    if bad_content is None:
+        return False
+    
+    tag = bad_content["tag"]
+    class_id = bad_content["class"]
+
+    data = soup.find_all(tag, {"class" : class_id})
+    
+    if data is not None:
+        print(data)
+
+        for child in data:
+            child.decompose()
+
+    return True
 
 # basically a robots.txt checker.
 class RobotsParser:
@@ -76,8 +96,11 @@ class NewsSaver:
             # we dont care about these ones.
             value : dict = text_data[key]
             element = get_element_by_id_or_class(value, soup)
-            text = element.text
 
+            # not a news page.
+            if element is None: return
+
+            text = element.text
             news_data[key] = text.strip()
 
         # get the image.
@@ -94,22 +117,16 @@ class NewsSaver:
 
         # here we save the content.
         content = get_element_by_id_or_class(sel["content"], soup)
-        ignorable_ids = sel.get("ignore_content_ids", EMPTY_LIST)
         content_text = ""
 
-        # TODO: Fix duplicated text.
-        for elem in content.find_all():
+        remove_irrelevant_data(content, sel)
+
+        for elem in content.find_all(recursive=False):
             if elem is None: continue
-            id = elem.get("id")
-            class_list = elem.get("class")
 
-            # ignorable tag, prolly ads related.
-            if (id is not None and id in ignorable_ids) or (class_list is not None and are_elements_in_another_list(class_list, ignorable_ids)): 
-                print(class_list, ignorable_ids)
-                continue
-
-            text : str = elem.text.strip()
+            text = elem.get_text(strip=True)
             content_text += text
+
 
         # append this data to dictionary.
         news_data["content"] = content_text.strip()

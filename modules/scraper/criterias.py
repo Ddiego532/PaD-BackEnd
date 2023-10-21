@@ -115,9 +115,10 @@ TVN_SELECTOR = {
         "class": "CUERPO"
     },
 
-    # there are some tags that should be ignored.
-    # el primero es "te puede interesar".
-    "ignore_content_ids": ["prontus-card-container"]
+    "common_irrelevant_tag": {
+        "tag": "div",
+        "class": "prontus-card-container",
+    }
 }
 
 # it doesn't let me put 24HORAS for some reason goofy ahh moment.

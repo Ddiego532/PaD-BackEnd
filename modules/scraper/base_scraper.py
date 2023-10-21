@@ -39,7 +39,7 @@ class BaseScraper:
 
             if not conn: continue
 
-            soup = BeautifulSoup(conn.text, "lxml", from_encoding="utf-8")
+            soup = BeautifulSoup(conn.text, "lxml")
             self.news_saver.save_to_dict(soup)
 
         self.news_saver.save_to_json()
