@@ -1,4 +1,4 @@
-from helpers import create_conn, get_base_url, is_valid, is_absolute, get_element_by_id_or_class
+from helpers import create_conn, get_base_url
 from scrapper_data import RobotsParser, NewsSaver, BeautifulSoup
 from scraper_constants import EMPTY_LIST
 
@@ -50,30 +50,7 @@ class BaseScraper:
 
     # force to go to a single url.
     def _connect_and_add_sublinks(self, url : str):
-        print("Passed URL: ", url)
-        conn = create_conn(url, self.conn_delay)
-        soup = BeautifulSoup(conn.text, "html.parser")
-
-        element = get_element_by_id_or_class(self._criteria, soup)
-    
-        for link in element.find_all("a"):
-            href = link.get("href")
-
-            # has weird paths.
-            if (href is None) or self.is_forbidden_sublink(href): 
-                print("HREF NULL or FORBIDDEN: ", href)
-                continue
-
-            if not is_absolute(href):
-                print("NOT ABSOULUTE: ", href)
-                href = f"{self.seed_url}{href}"
-            
-            # doesn't match with the seed url.
-            if not is_valid(href, self.seed_url): 
-                print("URL is not valid according to the seed: ", href)
-                continue
-
-            self.cached_links.add(href)
+        pass
 
     def get_sublinks_singlepage(self):
         return self._connect_and_add_sublinks(self.url)

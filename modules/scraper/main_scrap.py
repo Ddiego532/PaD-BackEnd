@@ -1,4 +1,5 @@
-from base_scraper import BaseScraper
+from base_scraper import BaseScraper, BeautifulSoup
+from helpers import is_valid, is_absolute, get_element_by_id_or_class, create_conn
 from criterias import *
 
 # is there something more we can do?
@@ -26,6 +27,32 @@ class HTMLScrapper(BaseScraper):
             self._connect_and_add_sublinks(numpath)
 
         return super().get_links_by_exploring(max_level)
+    
+    def _connect_and_add_sublinks(self, url: str):
+        print("Passed URL: ", url)
+        conn = create_conn(url, self.conn_delay)
+        soup = BeautifulSoup(conn.text, "html.parser")
+
+        element = get_element_by_id_or_class(self._criteria, soup)
+    
+        for link in element.find_all("a"):
+            href = link.get("href")
+
+            # has weird paths.
+            if (href is None) or self.is_forbidden_sublink(href): 
+                print("HREF NULL or FORBIDDEN: ", href)
+                continue
+
+            if not is_absolute(href):
+                print("NOT ABSOULUTE: ", href)
+                href = f"{self.seed_url}{href}"
+            
+            # doesn't match with the seed url.
+            if not is_valid(href, self.seed_url): 
+                print("URL is not valid according to the seed: ", href)
+                continue
+
+            self.cached_links.add(href)
 
 scrap = HTMLScrapper(TVN_NOTICIAS)
 scrap.get_links_by_exploring(1)

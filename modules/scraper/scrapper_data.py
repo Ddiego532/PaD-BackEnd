@@ -76,7 +76,9 @@ class NewsSaver:
             # we dont care about these ones.
             value : dict = text_data[key]
             element = get_element_by_id_or_class(value, soup)
-            news_data[key] = element.text.strip()
+            text = element.text
+
+            news_data[key] = text.strip()
 
         # get the image.
         image = get_tag(sel["image_url"], soup)
@@ -110,8 +112,6 @@ class NewsSaver:
         news_data["content"] = content_text.strip()
         self.saved_data.append(news_data)
 
-    def save_to_json(self, clear_data : bool = True):
-        dump = json.dumps(self.saved_data, indent=4)
- 
+    def save_to_json(self, clear_data : bool = True): 
         with open("test.json", "w", encoding="utf-8") as json_file:
-            json_file.write(dump)
+            json.dump(self.saved_data, json_file, ensure_ascii=False, indent=4)
