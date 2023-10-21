@@ -7,7 +7,7 @@ class BaseScrapper:
     def __init__(self, criteria : dict) -> None:
         # private thing as we are scraping based on this.
         # protected as childs require it.
-        self.__criteria = criteria
+        self._criteria = criteria
         self.url = criteria.get("url", None)
         self.target_tag = criteria.get("tag", None)
 
@@ -24,7 +24,7 @@ class BaseScrapper:
         self.__robot_parser = RobotsParser(self.seed_url)
         self.cached_links = set()
 
-        self.news_saver = NewsSaver(self.__criteria["news_selector"], "test")
+        self.news_saver = NewsSaver(self._criteria["news_selector"], "test")
 
     def set_connection_delay(self, delay : int):
         self.conn_delay = delay
@@ -33,7 +33,7 @@ class BaseScrapper:
         return is_valid(link, self.seed_url)
     
     def is_forbidden_sublink(self, link : str):
-        forbidden_paths = self.__criteria.get("forbidden_paths", EMPTY_LIST)
+        forbidden_paths = self._criteria.get("forbidden_paths", EMPTY_LIST)
     
         for path in forbidden_paths:
             if path in link:
@@ -47,7 +47,6 @@ class BaseScrapper:
 
             if not conn: continue
 
-            conn.encoding = "utf-8"
             soup = BeautifulSoup(conn.text, "lxml", from_encoding="utf-8")
             self.news_saver.save_to_dict(soup)
 
@@ -59,7 +58,7 @@ class BaseScrapper:
         conn = create_conn(url, self.conn_delay)
         soup = BeautifulSoup(conn.text, "html.parser")
 
-        element = get_element_by_id_or_class(self.__criteria, soup)
+        element = get_element_by_id_or_class(self._criteria, soup)
     
         for link in element.find_all("a"):
             href = link.get("href")
@@ -86,7 +85,7 @@ class BaseScrapper:
     # this could vary in terms of fetching.
     # TODO: Implement it for another news sites.
     def get_links_by_exploring(self, max_level : int = 1):
-        explore_path = self.__criteria.get("explore_path", None)
+        explore_path = self._criteria.get("explore_path", None)
     
         if explore_path is None: 
             return self.get_sublinks_singlepage()
