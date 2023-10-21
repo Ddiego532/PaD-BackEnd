@@ -1,4 +1,4 @@
-from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, get_joined_url
+from helpers import get_element_by_id_or_class, get_tag, is_absolute, get_joined_url
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
@@ -23,14 +23,15 @@ def remove_irrelevant_data(tag_element : Tag, criteria : dict):
 
 # basically a robots.txt checker.
 class RobotsParser:
-    def __init__(self, url):
+    def __init__(self, url : str, parent_session):
         self.__base_url = url
         # self.disallowed_links : list = None
         self.site_data = {}
+        self.parent_session = parent_session
         self.__request_data()
 
     def __request_data(self) -> None:
-        robots_txt = create_conn(f"{self.__base_url}/robots.txt", 0)
+        robots_txt = self.parent_session.get(f"{self.__base_url}/robots.txt")
 
         # FIXME: There are some sites without this file, so we need to add a better check.
         if not robots_txt:
@@ -132,7 +133,7 @@ class NewsSaver:
             content_text += text
 
         # append this data to dictionary.
-        data["content"] = content_text.strip()
+        data["content"] = content_text
 
     def _save_misc_data(self, data : dict, soup : BeautifulSoup):
         # where it comes.
@@ -161,7 +162,7 @@ class NewsSaver:
 
         if not self._save_primary_data(news_data, soup):
             return
-        
+
         self._save_content(news_data, soup)
         self._save_misc_data(news_data, soup)
 

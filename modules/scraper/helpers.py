@@ -1,30 +1,27 @@
-from requests import get as req_get, post as req_post, exceptions
+from requests import Session, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
 
 # define constants.
-SUCCESFUL_CODE = 200
-HEADERS = {
-    "Content-type": "text/html; charset=utf-8"
-}
+# GET AND POST SUCCESS CODES.
+SUCCESS_CODES = [200, 201]
 
-# Can return none.
-# URL can't be empty.
-# TODO: Add POST requests.
-def create_conn(url : str, delay : float = 0):
+def create_session():
+    return Session()
+
+# we only care about POST and GET.
+def handle_session(sess : Session, url : str, delay : float = 0, mode : str = "get", **kwargs):
     try:
-        conn = req_get(url, headers=HEADERS)
-        
-        # give it a chance to avoid bans.
+        connection = sess.get(url, **kwargs) if mode == "get" else sess.post(url, **kwargs)
+        # connection = sess.get(url, **kwargs)
+
         if delay > 0:
             sleep(delay)
 
-        # this is breaking the encapsulation logic, but we need to.
-        # FIXME: Change it in some moment.
-        if conn.status_code == SUCCESFUL_CODE:
-            return conn
-        
-        print(f"The url: {url} returned {conn.status_code}")
+        if connection.status_code in SUCCESS_CODES:
+            return connection
+
+        print(f"The url: {url} returned {connection.status_code}")
     except exceptions.Timeout:
         print(f"The connection timed out for {url}")
     except exceptions.TooManyRedirects:
@@ -33,7 +30,6 @@ def create_conn(url : str, delay : float = 0):
         print(f"Can't connect to {url}, because: {err}")
 
     return None
-
 
 ###### URL PARSER HELPERS #########
 def is_absolute(url : str):

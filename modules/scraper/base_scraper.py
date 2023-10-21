@@ -1,4 +1,4 @@
-from helpers import create_conn, get_base_url
+from helpers import create_session, handle_session, get_base_url
 from scrapper_data import RobotsParser, NewsSaver, BeautifulSoup
 from scraper_constants import EMPTY_LIST
 
@@ -19,10 +19,12 @@ class BaseScraper:
         if self.seed_url is None:
             raise ValueError(f"The seed URL has a null value.")
         
-        # imagine using this, but we are doing it for the xml.
-        self.__robot_parser = RobotsParser(self.seed_url)
+
+        self.page_session = create_session()
         self.cached_links = set()
 
+        # imagine using this, but we are doing it for the xml.
+        self.__robot_parser = RobotsParser(self.seed_url, self.page_session)
         self.news_saver = NewsSaver(self._criteria["news_selector"],  self.seed_url)
 
     def set_connection_delay(self, delay : int):
@@ -32,11 +34,13 @@ class BaseScraper:
         forbidden_paths = self._criteria.get("forbidden_paths", EMPTY_LIST)
     
         return any(path in link for path in forbidden_paths)
+    
+    def handle_page_session(self, url : str, mode : str = "get", **kwargs):
+        return handle_session(self.page_session, url=url, delay=self.conn_delay, mode=mode, **kwargs)
 
     def save_news(self):
         for news_link in self.cached_links:
-            conn = create_conn(news_link)
-
+            conn = self.handle_page_session(url=news_link)
             if not conn: continue
 
             soup = BeautifulSoup(conn.text, "lxml")
