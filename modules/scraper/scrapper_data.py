@@ -1,4 +1,4 @@
-from helpers import get_element_by_id_or_class, get_tag, is_absolute, get_joined_url
+from helpers import get_element_by_id_or_class, get_tag, is_absolute, get_joined_url, get_filename_by_domain
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
@@ -37,7 +37,7 @@ class RobotsParser:
         if not robots_txt:
             raise Exception("Can't fetch robots.txt")
         
-        text_content = robots_txt.text
+        text_content : str = robots_txt.text
         stripped_newlines = text_content.splitlines()
 
         for data in stripped_newlines:
@@ -76,9 +76,10 @@ class NewsSaver:
         self.news_selector = crit
         self.source_url = source
         self.saved_data = list()
+        self.filename = f"{get_filename_by_domain(self.source_url)}_latest_news"
 
-    def set_filename(self):
-        pass
+    def set_filename(self, filename : str):
+        self.filename = filename
 
     # really considering those 2 as an attribute.
     # this is the most important one.
@@ -169,7 +170,7 @@ class NewsSaver:
         self.saved_data.append(news_data)
 
     def save_to_json(self, clear_data : bool = True): 
-        with open("test.json", "w", encoding="utf-8") as json_file:
+        with open(f"{self.filename}.json", "w", encoding="utf-8") as json_file:
             json.dump(self.saved_data, json_file, ensure_ascii=False, indent=4)
 
         if clear_data:

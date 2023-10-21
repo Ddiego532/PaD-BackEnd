@@ -102,9 +102,17 @@ CNN_SELECTOR = {
         "class": "main-single-body__content"
     },
 
+    # TODO: Fix this criteria by adding a new function.
     "news_tags": {
         "tag": "div",
         "class": "the-tags__list"
+    }
+}
+
+LATERCERA_SELECTOR = {
+    "news_tags": {
+        "tag": "ul",
+        "class": "list-cat-y-tags",
     }
 }
 
