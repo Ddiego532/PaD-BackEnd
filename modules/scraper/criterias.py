@@ -3,19 +3,26 @@
 
 # EL MOSTRADOR HANDLER.
 ELMOSTRADOR_NEWS_SELECTOR = {
-    "title": {
-        "tag": "h1",
-        "class": "d-the-single__title | common:margin-bottom-25"
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "class": "d-the-single__title | common:margin-bottom-25"
+        },
+
+        "date": {
+            "tag": "time",
+            "class": "d-the-single__date | common:margin-bottom-20",
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "class": "d-the-single__excerpt | u-fw-600",
+        },
     },
 
-    "date": {
-        "tag": "time",
-        "class": "d-the-single__date | common:margin-bottom-20",
-    },
-
-    "subtitle": {
-        "tag": "p",
-        "class": "d-the-single__excerpt | u-fw-600",
+    "image_url" : {
+        "tag": "img",
+        "class": "d-the-single-media__image"
     },
 
     "content": {
@@ -24,7 +31,8 @@ ELMOSTRADOR_NEWS_SELECTOR = {
     },
 
     # there are some tags that should be ignored.
-    "ignore_content_identifiers": []
+    # el primero es "te puede interesar".
+    "ignore_content_ids": ["the-single-cards"]
 }
 
 ELMOSTRADOR = {
@@ -34,11 +42,12 @@ ELMOSTRADOR = {
     "id": "claves",
     # num goes here.
     "explore_path": "categoria/pais/page/page_num/",
-    "forbidden_paths": ["/autores/", "/autor/", "/page/"],
+    "forbidden_paths": ["/autores/", "/autor/", "/page/", "/multimedia/", "/opinion/"],
 
     "news_selector": ELMOSTRADOR_NEWS_SELECTOR
 }
 
+# this lad from here has ID.
 BIOBIOCHILE = {
     # how...
     "url": "https://www.biobiochile.cl/lista/tag/politica",
@@ -74,6 +83,43 @@ MEGANOTICIAS = {
     "forbidden_paths": ["/mundo/", "/temas/"]
 }
 
+TVN_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "id": "#contenido-ppal"
+        },
+
+        "date": {
+            "tag": "p",
+            "class": "fecha",
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "class": "baj",
+        },
+    },
+
+    "image_url" : {
+        "parent" : {
+            "tag": "div",
+            "class": "img-wrap"
+        },
+
+        "tag": "img",
+    },
+
+    "content": {
+        "tag": "div",
+        "class": "CUERPO"
+    },
+
+    # there are some tags that should be ignored.
+    # el primero es "te puede interesar".
+    "ignore_content_ids": ["prontus-card-container"]
+}
+
 # it doesn't let me put 24HORAS for some reason goofy ahh moment.
 TVN_NOTICIAS = {
     "url": "https://www.24horas.cl/actualidad/politica/",
@@ -82,4 +128,5 @@ TVN_NOTICIAS = {
     "class": "row",
     "explore_path": "actualidad/politica/p/page_num",
     "forbidden_paths": ["/p/"],
+    "news_selector": TVN_SELECTOR
 }
