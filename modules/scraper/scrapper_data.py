@@ -1,4 +1,4 @@
-from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, are_elements_in_another_list
+from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, get_joined_url
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
@@ -73,19 +73,16 @@ class RobotsParser:
 class NewsSaver:
     def __init__(self, crit : dict, source : str):
         self.news_selector = crit
-        self.source = source
+        self.source_url = source
         self.saved_data = list()
 
     def set_filename(self):
         pass
 
-    # retrieve this data first and then dump it.
-    def save_to_dict(self, soup : BeautifulSoup):
-        sel = self.news_selector
-        text_data = sel["text_data"]
-
-        # the stuff we save here.
-        news_data = dict()
+    # really considering those 2 as an attribute.
+    # this is the most important one.
+    def _save_primary_data(self, data : dict, soup : BeautifulSoup):
+        text_data = self.news_selector["text_data"]
 
         # iterate the text stuff.
         for key in text_data:
@@ -95,23 +92,33 @@ class NewsSaver:
             element = get_element_by_id_or_class(value, soup)
 
             # not a news page.
-            if element is None: return
+            if element is None: 
+                return False
 
             text = element.text
-            news_data[key] = text.strip()
+            data[key] = text.strip()
 
-        # get the image.
-        image = get_tag(sel["image_url"], soup)
+        return True
+    
+    def _save_multimedia(self, data : dict, soup: BeautifulSoup):
+        image = get_tag(self.news_selector["image_url"], soup)
+        if not image: return
+    
+        # get source.
+        source = image.get("src")
+        
+        # get the absolute path.
+        if not is_absolute(source):
+            source = get_joined_url(self.source_url, source)
 
-        if image:
-            # get source.
-            source = image.get("src")
+        data["image"] = source
 
-            if is_absolute(source):
-                pass
-
-            news_data["image"] = source
-
+    def _save_content(self, data : dict, soup : BeautifulSoup):
+        sel = self.news_selector
+        
+        # could be images or video.
+        self._save_multimedia(data, soup)
+    
         # here we save the content.
         content = get_element_by_id_or_class(sel["content"], soup)
         content_text = ""
@@ -124,9 +131,40 @@ class NewsSaver:
             text = elem.get_text(strip=True)
             content_text += text
 
-
         # append this data to dictionary.
-        news_data["content"] = content_text.strip()
+        data["content"] = content_text.strip()
+
+    def _save_misc_data(self, data : dict, soup : BeautifulSoup):
+        # where it comes.
+        sel = self.news_selector
+        data["source"] = self.source_url
+    
+        # the tags.
+        news_tags = sel["news_tags"]
+        if not news_tags: return
+
+        element = get_element_by_id_or_class(news_tags, soup)
+
+        if not element: return
+        data["tags"] = []
+    
+        for refs in element.children:
+            text = refs.get_text(strip=True)
+            if len(text) <= 0: continue
+
+            data["tags"].append(text.lower())
+
+    # retrieve this data first and then dump it.
+    def save_to_dict(self, soup : BeautifulSoup):
+        # the stuff we save here.
+        news_data = dict()
+
+        if not self._save_primary_data(news_data, soup):
+            return
+        
+        self._save_content(news_data, soup)
+        self._save_misc_data(news_data, soup)
+
         self.saved_data.append(news_data)
 
     def save_to_json(self, clear_data : bool = True): 

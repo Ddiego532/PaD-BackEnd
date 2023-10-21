@@ -35,6 +35,49 @@ ELMOSTRADOR_NEWS_SELECTOR = {
     "ignore_content_ids": ["the-single-cards"]
 }
 
+TVN_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "id": "#contenido-ppal"
+        },
+
+        "date": {
+            "tag": "p",
+            "class": "fecha",
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "class": "baj",
+        },
+    },
+
+    "image_url" : {
+        "parent" : {
+            "tag": "div",
+            "class": "img-wrap"
+        },
+
+        "tag": "img",
+    },
+
+    "content": {
+        "tag": "div",
+        "class": "CUERPO"
+    },
+
+    "common_irrelevant_tag": {
+        "tag": "div",
+        "class": "prontus-card-container",
+    },
+
+    "news_tags": {
+        "tag": "ul",
+        "class": "tags"
+    }
+}
+
 ELMOSTRADOR = {
     # reverted this guy again.
     "url": "https://www.elmostrador.cl/categoria/pais/",
@@ -81,44 +124,6 @@ MEGANOTICIAS = {
     "class": "notas",
     "explore_path": "temas/politica/?page=page_num",
     "forbidden_paths": ["/mundo/", "/temas/"]
-}
-
-TVN_SELECTOR = {
-    "text_data": {
-        "title": {
-            "tag": "h1",
-            "id": "#contenido-ppal"
-        },
-
-        "date": {
-            "tag": "p",
-            "class": "fecha",
-        },
-
-        "subtitle": {
-            "tag": "p",
-            "class": "baj",
-        },
-    },
-
-    "image_url" : {
-        "parent" : {
-            "tag": "div",
-            "class": "img-wrap"
-        },
-
-        "tag": "img",
-    },
-
-    "content": {
-        "tag": "div",
-        "class": "CUERPO"
-    },
-
-    "common_irrelevant_tag": {
-        "tag": "div",
-        "class": "prontus-card-container",
-    }
 }
 
 # it doesn't let me put 24HORAS for some reason goofy ahh moment.

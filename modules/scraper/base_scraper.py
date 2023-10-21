@@ -23,7 +23,7 @@ class BaseScraper:
         self.__robot_parser = RobotsParser(self.seed_url)
         self.cached_links = set()
 
-        self.news_saver = NewsSaver(self._criteria["news_selector"], "test")
+        self.news_saver = NewsSaver(self._criteria["news_selector"],  self.seed_url)
 
     def set_connection_delay(self, delay : int):
         self.conn_delay = delay
