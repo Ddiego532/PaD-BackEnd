@@ -1,15 +1,14 @@
 from helpers import create_conn, get_base_url, is_valid, is_absolute, get_element_by_id_or_class
 from scrapper_data import RobotsParser, NewsSaver, BeautifulSoup
 from scraper_constants import EMPTY_LIST
-import criterias
 
-class BaseScrapper:
+# PARENT CLASS.
+class BaseScraper:
     def __init__(self, criteria : dict) -> None:
         # private thing as we are scraping based on this.
         # protected as childs require it.
         self._criteria = criteria
         self.url = criteria.get("url", None)
-        self.target_tag = criteria.get("tag", None)
 
         self.conn_delay = 0
 
@@ -28,9 +27,6 @@ class BaseScrapper:
 
     def set_connection_delay(self, delay : int):
         self.conn_delay = delay
-
-    def is_valid_sublink(self, link : str):
-        return is_valid(link, self.seed_url)
     
     def is_forbidden_sublink(self, link : str):
         forbidden_paths = self._criteria.get("forbidden_paths", EMPTY_LIST)
@@ -53,7 +49,7 @@ class BaseScrapper:
         self.news_saver.save_to_json()
 
     # force to go to a single url.
-    def __connect_and_add_sublinks(self, url : str):
+    def _connect_and_add_sublinks(self, url : str):
         print("Passed URL: ", url)
         conn = create_conn(url, self.conn_delay)
         soup = BeautifulSoup(conn.text, "html.parser")
@@ -73,52 +69,26 @@ class BaseScrapper:
                 href = f"{self.seed_url}{href}"
             
             # doesn't match with the seed url.
-            if not self.is_valid_sublink(href): 
+            if not is_valid(href, self.seed_url): 
                 print("URL is not valid according to the seed: ", href)
                 continue
 
             self.cached_links.add(href)
 
     def get_sublinks_singlepage(self):
-        return self.__connect_and_add_sublinks(self.url)
+        return self._connect_and_add_sublinks(self.url)
 
     # this could vary in terms of fetching.
     # TODO: Implement it for another news sites.
     def get_links_by_exploring(self, max_level : int = 1):
-        explore_path = self._criteria.get("explore_path", None)
-    
-        if explore_path is None: 
-            return self.get_sublinks_singlepage()
-        
-        # below 1 bad!!!
-        max_level = max(max_level, 1)
-
-        print(self.seed_url, explore_path)
-        fullpath = f"{self.seed_url}/{explore_path}"
-
-        for i in range(1, max_level + 1):
-            numpath = fullpath.replace("page_num", str(i), 1)
-            print("Going to: ", numpath)
-            self.__connect_and_add_sublinks(numpath)
+        pass
 
     def get_news_links(self):
         return self.cached_links
         
     def get_links_by_sitemap(self):
-        sitemap = self.get_sitemaps()
-        if not sitemap: return
+        pass
 
     def get_sitemaps(self):
         # can return none.
         return self.__robot_parser.get_sitemaps()
-    
-LATERCERA_CRIT = criterias.LATERCERA
-BIOBIO = criterias.BIOBIOCHILE
-TVN = criterias.TVN_NOTICIAS
-
-scrap = BaseScrapper(TVN)
-scrap.get_links_by_exploring(1)
-
-print(scrap.get_news_links(), len(scrap.get_news_links()))
-
-scrap.save_news()
