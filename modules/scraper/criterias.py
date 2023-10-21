@@ -63,9 +63,9 @@ TVN_SELECTOR = {
         "class": "CUERPO"
     },
 
-    "common_irrelevant_tag": {
-        "tag": "div",
-        "class": "prontus-card-container",
+    "common_irrelevant_tags": {
+        "tags": ["div"],
+        "classes": ["prontus-card-container"]
     },
 
     "news_tags": {

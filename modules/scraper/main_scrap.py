@@ -1,5 +1,5 @@
 from base_scraper import BaseScraper, BeautifulSoup
-from helpers import is_valid, is_absolute, get_element_by_id_or_class, handle_session
+from helpers import is_valid, is_absolute, get_element_by_id_or_class
 from criterias import *
 
 # is there something more we can do?
@@ -50,6 +50,6 @@ class HTMLScrapper(BaseScraper):
 
             self.cached_links.add(href)
 
-scrap = HTMLScrapper(CNNCHILE)
+scrap = HTMLScrapper(TVN_NOTICIAS)
 scrap.get_links_by_exploring(10)
 scrap.save_news()

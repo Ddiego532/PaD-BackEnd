@@ -13,7 +13,6 @@ def create_session():
 def handle_session(sess : Session, url : str, delay : float = 0, mode : str = "get", **kwargs):
     try:
         connection = sess.get(url, **kwargs) if mode == "get" else sess.post(url, **kwargs)
-        # connection = sess.get(url, **kwargs)
 
         if delay > 0:
             sleep(delay)

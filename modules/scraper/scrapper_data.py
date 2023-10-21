@@ -3,6 +3,35 @@ from helpers import get_element_by_id_or_class, get_tag, is_absolute, get_joined
 from bs4 import BeautifulSoup, Tag
 import json
 
+def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
+    bad_content : dict = criteria.get("common_irrelevant_tags", None)
+
+    # not removed.
+    if bad_content is None:
+        return False
+    
+    tags = bad_content["tags"]
+    classes = bad_content["classes"]
+
+    tag_count = len(tags)
+
+    if tag_count != len(classes):
+        return False
+    
+    for index in range(0, tag_count):
+        selected_tag = tags[index]
+        class_ = classes[index]
+
+        data = tag_element.find_all(selected_tag, {"class": class_})
+
+        if data is None: continue
+
+        for child in data:
+            child.decompose()
+
+    return True
+
+"""
 def remove_irrelevant_data(tag_element : Tag, criteria : dict):
     bad_content : dict = criteria.get("common_irrelevant_tag", None)
 
@@ -19,7 +48,7 @@ def remove_irrelevant_data(tag_element : Tag, criteria : dict):
         for child in data:
             child.decompose()
 
-    return True
+    return True"""
 
 # basically a robots.txt checker.
 class RobotsParser:
@@ -125,7 +154,7 @@ class NewsSaver:
         content = get_element_by_id_or_class(sel["content"], soup)
         content_text = ""
 
-        remove_irrelevant_data(content, sel)
+        remove_multiple_irrelevant_data(content, sel)
 
         for elem in content.find_all(recursive=False):
             if elem is None: continue
