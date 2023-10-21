@@ -1,10 +1,9 @@
 from helpers import create_conn, get_element_by_id_or_class, get_tag, is_absolute, are_elements_in_another_list
-from scraper_constants import EMPTY_LIST
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
 
-def remove_irrelevant_data(soup : Tag, criteria : dict):
+def remove_irrelevant_data(tag_element : Tag, criteria : dict):
     bad_content : dict = criteria.get("common_irrelevant_tag", None)
 
     # not removed.
@@ -14,11 +13,9 @@ def remove_irrelevant_data(soup : Tag, criteria : dict):
     tag = bad_content["tag"]
     class_id = bad_content["class"]
 
-    data = soup.find_all(tag, {"class" : class_id})
+    data = tag_element.find_all(tag, {"class" : class_id})
     
     if data is not None:
-        print(data)
-
         for child in data:
             child.decompose()
 
