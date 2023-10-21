@@ -29,10 +29,6 @@ ELMOSTRADOR_NEWS_SELECTOR = {
         "tag": "div",
         "class": "d-the-single-wrapper__text"
     },
-
-    # there are some tags that should be ignored.
-    # el primero es "te puede interesar".
-    "ignore_content_ids": ["the-single-cards"]
 }
 
 TVN_SELECTOR = {
@@ -78,6 +74,40 @@ TVN_SELECTOR = {
     }
 }
 
+CNN_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "class": "main-single-header__title"
+        },
+
+        "date": {
+            "tag": "span",
+            "class": "main-single-about__item main-single__date"
+        },
+
+        "subtitle": {
+            "tag": "div",
+            "class": "main-single-header__excerpt"
+        }
+    },
+
+    "image_url": {
+        "tag": "img",
+        "class": "main-single-body__image js-img-single"
+    },
+
+    "content": {
+        "tag": "div",
+        "class": "main-single-body__content"
+    },
+
+    "news_tags": {
+        "tag": "div",
+        "class": "the-tags__list"
+    }
+}
+
 ELMOSTRADOR = {
     # reverted this guy again.
     "url": "https://www.elmostrador.cl/categoria/pais/",
@@ -115,7 +145,8 @@ CNNCHILE = {
     "tag": "div",
     "class": "inner-list",
     "explore_path": "tag/politica/page/page_num/",
-    "forbidden_paths": ["/lodijeronencnn/", "/opinion/", "/programas-completos/", "/mundo/", "/tag/"]
+    "forbidden_paths": ["/lodijeronencnn/", "/opinion/", "/programas-completos/", "/mundo/", "/tag/"],
+    "news_selector": CNN_SELECTOR
 }
 
 MEGANOTICIAS = {

@@ -50,6 +50,6 @@ class HTMLScrapper(BaseScraper):
 
             self.cached_links.add(href)
 
-scrap = HTMLScrapper(TVN_NOTICIAS)
+scrap = HTMLScrapper(CNNCHILE)
 scrap.get_links_by_exploring(10)
 scrap.save_news()
