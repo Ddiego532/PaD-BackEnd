@@ -233,6 +233,6 @@ COOPERATIVA = {
     # pls fix
     "identifier_attrib": "style",
     "attrib_value": "display:table;margin: 35px 0;",
-    "forbidden_paths": ["/twitter.com/", "/tax/"],
+    "forbidden_paths": ["/tax/"],
     "news_selector": COOPERATIVA_SELECTOR,
 }
