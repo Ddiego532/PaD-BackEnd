@@ -111,6 +111,41 @@ BIOBIOCHILE_SELECTOR = {
     }
 }
 
+COOPERATIVA_SELECTOR = {
+    "text_data": {
+        "title": {"tag": "h1", "identifier_attrib": "class", "attrib_value": "titular titular-audio"},
+        "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "texto-bajada"},
+        "date": {
+            "parent": {
+                "tag": "div",
+                "identifier_attrib": "class",
+                "attrib_value": "fecha-publicacion"
+            },
+
+            "tag": "time",
+        }
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "id",
+        "attrib_value": "cuerpo-ad",
+    },
+
+    # another one being different woo!!!
+    "image_url": {
+        "tag": "meta",
+        "identifier_attrib": "rel",
+        "attrib_value": "image_src",
+        "forced_src": "href",
+    },
+
+    "common_irrelevant_tags": {
+        "tags" : ["div"],
+        "classes": ["modulo-lee"],
+    }
+}
+
 TELETRECE = {
     "url": "https://www.t13.cl/politica",
     "tag": "div",
@@ -181,4 +216,15 @@ TVN_NOTICIAS = {
     "forbidden_paths": ["/p/"],
     "news_selector": TVN_SELECTOR,
     "ignore_content_ids": ["prontus-card-content"]
+}
+
+COOPERATIVA = {
+    "url": "https://www.cooperativa.cl/noticias/site/tax/port/all/cooperativataxport_3_156__1.html",
+    "tag": "section",
+    # damn....
+    # pls fix
+    "identifier_attrib": "style",
+    "attrib_value": "display:table;margin: 35px 0;",
+    "forbidden_paths": ["/twitter.com/", "/tax/"],
+    "news_selector": COOPERATIVA_SELECTOR,
 }

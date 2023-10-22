@@ -120,7 +120,7 @@ class NewsSaver:
             # special handler.
             # we dont care about these ones.
             value : dict = text_data[key]
-            element = get_element_by_identifier_attribute(value, soup)
+            element = get_tag(value, soup)
 
             # not a news page.
             if element is None: 
