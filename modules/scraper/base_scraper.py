@@ -39,12 +39,16 @@ class BaseScraper:
         return handle_session(self.page_session, url=url, delay=self.conn_delay, mode=mode, **kwargs)
 
     def save_news(self):
+        news_link : str
+
         for news_link in self.cached_links:
             conn = self.handle_page_session(url=news_link)
             if not conn: continue
 
-            soup = BeautifulSoup(conn.text, "lxml")
-            self.news_saver.save_to_dict(soup)
+            self.news_saver.save_to_dict(conn)
+
+            # soup = BeautifulSoup(conn.text, "lxml")
+            #self.news_saver.save_to_dict(soup, news_link)
 
         self.news_saver.save_to_json()
 

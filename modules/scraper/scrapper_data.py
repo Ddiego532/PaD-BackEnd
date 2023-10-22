@@ -1,4 +1,6 @@
 from helpers import get_element_by_identifier_attribute, get_tag, is_absolute, get_joined_url, get_filename_by_domain
+from scraper_constants import PARSE_MODE
+from requests import Response
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
@@ -175,10 +177,11 @@ class NewsSaver:
 
         return True
 
-    def _save_misc_data(self, data : dict, soup : BeautifulSoup):
+    def _save_misc_data(self, data : dict, soup : BeautifulSoup, page_source : str = ""):
         # where it comes.
         sel = self.news_selector
         data["source"] = self.source_url
+        data["full_source"] = page_source
     
         # the tags.
         news_tags = sel.get("news_tags", None)
@@ -198,17 +201,19 @@ class NewsSaver:
 
             data["tags"].append(cleaned_text)
 
+
     # retrieve this data first and then dump it.
-    def save_to_dict(self, soup : BeautifulSoup):
+    def save_to_dict(self, conn_data : Response):
         # the stuff we save here.
         news_data = dict()
+        soup = BeautifulSoup(conn_data.text, PARSE_MODE)
 
         # can't save.
         if not self._save_primary_data(news_data, soup) or not self._save_content(news_data, soup):
             return
 
         # self._save_content(news_data, soup)
-        self._save_misc_data(news_data, soup)
+        self._save_misc_data(news_data, soup, conn_data.url)
 
         self.saved_data.append(news_data)
 
