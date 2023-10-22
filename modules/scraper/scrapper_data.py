@@ -1,4 +1,4 @@
-from helpers import get_element_by_id_or_class, get_tag, is_absolute, get_joined_url, get_filename_by_domain
+from helpers import get_element_by_identifier_attribute, get_tag, is_absolute, get_joined_url, get_filename_by_domain
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
 import json
@@ -120,7 +120,7 @@ class NewsSaver:
             # special handler.
             # we dont care about these ones.
             value : dict = text_data[key]
-            element = get_element_by_id_or_class(value, soup)
+            element = get_element_by_identifier_attribute(value, soup)
 
             # not a news page.
             if element is None: 
@@ -151,7 +151,7 @@ class NewsSaver:
         self._save_multimedia(data, soup)
     
         # here we save the content.
-        content = get_element_by_id_or_class(sel["content"], soup)
+        content = get_element_by_identifier_attribute(sel["content"], soup)
         content_text = ""
 
         remove_multiple_irrelevant_data(content, sel)
@@ -174,7 +174,7 @@ class NewsSaver:
         news_tags = sel["news_tags"]
         if not news_tags: return
 
-        element = get_element_by_id_or_class(news_tags, soup)
+        element = get_element_by_identifier_attribute(news_tags, soup)
 
         if not element: return
         data["tags"] = []

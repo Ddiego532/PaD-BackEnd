@@ -6,160 +6,69 @@
 
 ELMOSTRADOR_NEWS_SELECTOR = {
     "text_data": {
-        "title": {
-            "tag": "h1",
-            "class": "d-the-single__title | common:margin-bottom-25"
-        },
-
-        "date": {
-            "tag": "time",
-            "class": "d-the-single__date | common:margin-bottom-20",
-        },
-
-        "subtitle": {
-            "tag": "p",
-            "class": "d-the-single__excerpt | u-fw-600",
-        },
+        "title": {"tag": "h1", "identifier_attrib": "class", "attrib_value": "d-the-single__title | common:margin-bottom-25"},
+        "date": {"tag": "time", "identifier_attrib": "class", "attrib_value": "d-the-single__date | common:margin-bottom-20"},
+        "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "d-the-single__excerpt | u-fw-600"},
     },
-
-    "image_url" : {
-        "tag": "img",
-        "class": "d-the-single-media__image"
-    },
-
-    "content": {
-        "tag": "div",
-        "class": "d-the-single-wrapper__text"
-    },
+    "image_url": {"tag": "img", "identifier_attrib": "class", "attrib_value": "d-the-single-media__image"},
+    "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "d-the-single-wrapper__text"},
 }
 
 TVN_SELECTOR = {
     "text_data": {
-        "title": {
-            "tag": "h1",
-            "id": "#contenido-ppal"
-        },
-
-        "date": {
-            "tag": "p",
-            "class": "fecha",
-        },
-
-        "subtitle": {
-            "tag": "p",
-            "class": "baj",
-        },
+        "title": {"tag": "h1", "identifier_attrib": "id", "attrib_value": "#contenido-ppal"},
+        "date": {"tag": "p", "identifier_attrib": "class", "attrib_value": "fecha"},
+        "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "baj"},
     },
-
-    "image_url" : {
-        "parent" : {
-            "tag": "div",
-            "class": "img-wrap"
-        },
-
+    "image_url": {
+        "parent": {"tag": "div", "identifier_attrib": "class", "attrib_value": "img-wrap"},
         "tag": "img",
     },
-
-    "content": {
-        "tag": "div",
-        "class": "CUERPO"
-    },
-
-    "common_irrelevant_tags": {
-        "tags": ["div"],
-        "classes": ["prontus-card-container"]
-    },
-
-    "news_tags": {
-        "tag": "ul",
-        "class": "tags"
-    }
+    "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "CUERPO"},
+    "common_irrelevant_tags": {"tags": ["div"], "classes": ["prontus-card-container"]},
+    "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "tags"},
 }
 
 CNN_SELECTOR = {
     "text_data": {
-        "title": {
-            "tag": "h1",
-            "class": "main-single-header__title"
-        },
-
-        "date": {
-            "tag": "span",
-            "class": "main-single-about__item main-single__date"
-        },
-
-        "subtitle": {
-            "tag": "div",
-            "class": "main-single-header__excerpt"
-        }
+        "title": {"tag": "h1", "identifier_attrib": "class", "attrib_value": "main-single-header__title"},
+        "date": {"tag": "span", "identifier_attrib": "class", "attrib_value": "main-single-about__item main-single__date"},
+        "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-header__excerpt"}
     },
-
-    "image_url": {
-        "tag": "img",
-        "class": "main-single-body__image js-img-single"
-    },
-
-    "content": {
-        "tag": "div",
-        "class": "main-single-body__content"
-    },
-
-    # TODO: Fix this criteria by adding a new function.
-    "news_tags": {
-        "tag": "div",
-        "class": "the-tags__list"
-    }
+    "image_url": {"tag": "img", "identifier_attrib": "class", "attrib_value": "main-single-body__image js-img-single"},
+    "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-body__content"},
+    "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-tags__list"}
 }
 
 LATERCERA_SELECTOR = {
-    "text_data": {
-        # whitespace goofy ahh moment
-        "title": {
-            "tag": "div",
-            "class": "hl"
-        },
+    "text_data": {"title": {"tag": "div", "identifier_attrib": "class", "attrib_value": "hl"},
+                  "date": {"tag": "time", "identifier_attrib": "class", "attrib_value": "p-left-10"},
+                  "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "excerpt"}},
+    "image_url": {"parent": {"tag": "div", "identifier_attrib": "class", "attrib_value": "full-image"},
+                  "tag": "img"},
+    "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "single-content"},
+    "common_irrelevant_tags": {"tags": ["aside", "div"], "classes": ["offer-content", "links | story_links"]},
+    "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "list-cat-y-tags"},
+}
 
-        "date": {
-            "tag": "time",
-            "class": "p-left-10"
-        },
+TELETRECE_SELECTOR = {
+    ""
+}
 
-        "subtitle": {
-            "tag": "p",
-            "class": "excerpt",
-        }
-    },
-
-    "image_url": {
-        "parent": {
-            "tag": "div",
-            "class": "full-image",
-        },
-
-        "tag": "img",
-    },
-
-    "content": {
-        "tag": "div",
-        "class": "single-content"
-    },
-
-    "common_irrelevant_tags": {
-        "tags": ["aside", "div"],
-        "classes": ["offer-content", "links | story_links"]
-    },
-
-    "news_tags": {
-        "tag": "ul",
-        "class": "list-cat-y-tags",
-    }
+TELETRECE = {
+    "url": "https://www.t13.cl/politica",
+    "tag": "div",
+    "identifier_attrib": "class",
+    "attrib_value": "topic-landing-news__list view-content",
+    "forbidden_paths": ["/videos/"]
 }
 
 ELMOSTRADOR = {
     # reverted this guy again.
     "url": "https://www.elmostrador.cl/categoria/pais/",
     "tag": "section",
-    "id": "claves",
+    "identifier_attrib": "id",
+    "attrib_value": "clave",
     # num goes here.
     "explore_path": "categoria/pais/page/page_num/",
     "forbidden_paths": ["/autores/", "/autor/", "/page/", "/multimedia/", "/opinion/"],
@@ -167,32 +76,29 @@ ELMOSTRADOR = {
     "news_selector": ELMOSTRADOR_NEWS_SELECTOR
 }
 
-# this lad from here has ID.
 BIOBIOCHILE = {
-    # how...
     "url": "https://www.biobiochile.cl/lista/tag/politica",
     "tag": "div",
-    # should be only one.
-    "class": "section-body",
-    "forbidden_paths" : ["/autores/", "/biobiotv/", "/opinion/", "/especial/"],
+    "identifier_attrib": "class",
+    "attrib_value": "section-body",
+    "forbidden_paths": ["/autores/", "/biobiotv/", "/opinion/", "/especial/"],
 }
 
 LATERCERA = {
     "url": "https://www.latercera.com/categoria/politica/page/1",
     "tag": "section",
-    # like the one before.
-    "class": "top-mainy",
-    # this differs
+    "identifier_attrib": "class",
+    "attrib_value": "top-mainy",
     "explore_path": "categoria/politica/page/page_num/",
     "news_selector": LATERCERA_SELECTOR,
     "forbidden_paths": ["/autor/", "/categoria/"]
 }
 
-# i should guess biobio and cnn are somewhat kinda similar.
 CNNCHILE = {
     "url": "https://www.cnnchile.com/tag/politica/",
     "tag": "div",
-    "class": "inner-list",
+    "identifier_attrib": "class",
+    "attrib_value": "inner-list",
     "explore_path": "tag/politica/page/page_num/",
     "forbidden_paths": ["/lodijeronencnn/", "/opinion/", "/programas-completos/", "/mundo/", "/tag/"],
     "news_selector": CNN_SELECTOR
@@ -201,17 +107,17 @@ CNNCHILE = {
 MEGANOTICIAS = {
     "url": "https://www.meganoticias.cl/temas/politica/",
     "tag": "div",
-    "class": "notas",
+    "identifier_attrib": "class",
+    "attrib_value": "notas",
     "explore_path": "temas/politica/?page=page_num",
     "forbidden_paths": ["/mundo/", "/temas/"]
 }
 
-# it doesn't let me put 24HORAS for some reason goofy ahh moment.
 TVN_NOTICIAS = {
     "url": "https://www.24horas.cl/actualidad/politica/",
     "tag": "div",
-    # FIXME: This can be changed in the future.
-    "class": "row",
+    "identifier_attrib": "class",
+    "attrib_value": "row",
     "explore_path": "actualidad/politica/p/page_num",
     "forbidden_paths": ["/p/"],
     "news_selector": TVN_SELECTOR,

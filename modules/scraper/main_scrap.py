@@ -1,9 +1,9 @@
 from base_scraper import BaseScraper, BeautifulSoup
-from helpers import is_valid, is_absolute, get_element_by_id_or_class
+from helpers import is_valid, is_absolute, get_element_by_identifier_attribute
 from criterias import *
 
 # is there something more we can do?
-class HTMLScrapper(BaseScraper):
+class HTMLScraper(BaseScraper):
     def __init__(self, criteria: dict) -> None:
         super().__init__(criteria)
 
@@ -33,7 +33,7 @@ class HTMLScrapper(BaseScraper):
         conn = self.handle_page_session(url=url)
         soup = BeautifulSoup(conn.text, "html.parser")
 
-        element = get_element_by_id_or_class(self._criteria, soup)
+        element = get_element_by_identifier_attribute(self._criteria, soup)
     
         for link in element.find_all("a"):
             href = link.get("href")
@@ -50,6 +50,6 @@ class HTMLScrapper(BaseScraper):
 
             self.cached_links.add(href)
 
-scrap = HTMLScrapper(LATERCERA)
+scrap = HTMLScraper(TVN_NOTICIAS)
 scrap.get_links_by_exploring(5)
 scrap.save_news()

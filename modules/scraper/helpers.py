@@ -49,22 +49,25 @@ def get_decoded_text(content : str):
     return content.encode("utf-8").decode("unicode-escape")
 
 #### BEAUTIFUL SOUP CRITERIA HELPERS #########
-def get_element_by_id_or_class(data : dict, soup):
-    id, has_id = data.get("id", None), True
+def get_element_by_identifier_attribute(data : dict, soup):
+    id = data.get("identifier_attrib", None)
 
     if id is None:
-        id, has_id = data.get("class", None), False
+        raise ValueError("Identifier can't be null.")
     
-    return soup.find(data["tag"], {"id" if has_id else "class": id})
+    id_value = data.get("attrib_value")
+        # id, has_id = data.get("class", None), False
+    
+    return soup.find(data["tag"], {id : id_value})
 
 def get_tag(data : dict, soup):
     # parents can give the way we retrieve the data.
     parent_data = data.get("parent", None)
 
     if parent_data is None:
-        return get_element_by_id_or_class(data, soup)
+        return get_element_by_identifier_attribute(data, soup)
 
-    parent_element = get_element_by_id_or_class(parent_data, soup)
+    parent_element = get_element_by_identifier_attribute(parent_data, soup)
 
     # nested ahh thing
     if parent_element:
