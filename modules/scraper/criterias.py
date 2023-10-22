@@ -52,7 +52,31 @@ LATERCERA_SELECTOR = {
 }
 
 TELETRECE_SELECTOR = {
-    ""
+    "text_data": {"title": {"tag": "h1", "identifier_attrib": "class", "attrib_value": "article-component__header-title"},
+                  "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "article-component__lead"},
+                  "date": {"tag": "time", "identifier_attrib": "itemprop", "attrib_value": "datePublished"}},
+    "image_url": {
+        "parent": {
+            "tag": "div", 
+            "identifier_attrib": "class", 
+            "attrib_value": "article-component__header-image-wrapper"
+        }, 
+        "tag": "img"
+    },
+    "content": {"tag": "div", "identifier_attrib": "id", "attrib_value": "article-body-wrapper"},
+    "common_irrelevant_tags": {
+        "tags": ["div"],
+        "classes": ["article-component__read"],
+    },
+    "news_tags": {
+        "parent": {
+            "tag": "div", 
+            "identifier_attrib": "class", 
+            "attrib_value": "tag-list__wrapper"
+        },
+
+        "tag": "ul",
+    }
 }
 
 TELETRECE = {
@@ -60,7 +84,8 @@ TELETRECE = {
     "tag": "div",
     "identifier_attrib": "class",
     "attrib_value": "topic-landing-news__list view-content",
-    "forbidden_paths": ["/videos/"]
+    "forbidden_paths": ["/videos/"],
+    "news_selector": TELETRECE_SELECTOR,
 }
 
 ELMOSTRADOR = {

@@ -174,7 +174,7 @@ class NewsSaver:
         news_tags = sel["news_tags"]
         if not news_tags: return
 
-        element = get_element_by_identifier_attribute(news_tags, soup)
+        element = get_tag(news_tags, soup)
 
         if not element: return
         data["tags"] = []
