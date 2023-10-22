@@ -207,6 +207,58 @@ ELDINAMO_SELECTOR = {
     }
 }
 
+ASCOM_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "identifier_attrib": "class",
+            "attrib_value": "art__hdl__tl",
+        },
+
+        "subtitle": {
+            "tag": "h2",
+            "identifier_attrib": "class",
+            "attrib_value": "art__hdl__opn",
+        },
+
+        "date": {
+            "parent": {
+                "tag": "div",
+                "identifier_attrib": "class",
+                "attrib_value": "art__by__aux"
+            },
+
+            "tag": "time",
+        }
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "art__m-cnt",
+    },
+
+    "image_url": {
+        "parent": {
+            "tag": "div",
+            "identifier_attrib": "class",
+            "attrib_value": "art__m-cnt",
+        },
+        "tag": "img"
+    },
+
+    "news_tags": {
+        "tag": "nav",
+        "identifier_attrib": "class",
+        "attrib_value": "art__tags",
+    },
+
+    "common_irrelevant_tags": {
+        "tags": ["div", "figcaption"],
+        "classes": ["ext ext-embed", "mm__cap"]
+    }
+}
+
 TELETRECE = {
     "url": "https://www.t13.cl/politica",
     "tag": "div",
@@ -298,4 +350,15 @@ ELDINAMO = {
     "news_selector": ELDINAMO_SELECTOR,
     # we don't care about these links.
     "forbidden_paths": ["/page/"]
+}
+
+ASCOM = {
+    "url": "https://chile.as.com/noticias/politica/",
+    "tag": "div",
+    "identifier_attrib": "class",
+    "attrib_value": "area-gr g-double-col",
+    "explore_path": "noticias/politica/page_num",
+    "force_spec_url" : True,
+    "forbidden_paths": ["/?omnil=mpal", "/videos/"],
+    "news_selector": ASCOM_SELECTOR,
 }

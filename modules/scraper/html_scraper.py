@@ -8,7 +8,18 @@ class HTMLScraper(BaseScraper):
 
         self.target_tag = criteria.get("tag", None)
 
+    def _get_from_url(self):
+        if not self._criteria.get("force_spec_url", False):
+            return
+        
+        print("Connecting to the URL specified:", self.url)
+
+        self._connect_and_add_sublinks(self.url)
+
     def get_links_by_exploring(self, max_level: int = 1):
+        # only a hotfix for as.com
+        self._get_from_url()
+
         explore_path = self._criteria.get("explore_path", None)
     
         if explore_path is None: 

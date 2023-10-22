@@ -155,6 +155,11 @@ class NewsSaver:
     
         # here we save the content.
         content = get_element_by_identifier_attribute(sel["content"], soup)
+
+        # nothing to save here.
+        if content is None:
+            return False
+
         content_text = ""
 
         remove_multiple_irrelevant_data(content, sel)
@@ -167,6 +172,8 @@ class NewsSaver:
 
         # append this data to dictionary.
         data["content"] = content_text
+
+        return True
 
     def _save_misc_data(self, data : dict, soup : BeautifulSoup):
         # where it comes.
@@ -196,10 +203,11 @@ class NewsSaver:
         # the stuff we save here.
         news_data = dict()
 
-        if not self._save_primary_data(news_data, soup):
+        # can't save.
+        if not self._save_primary_data(news_data, soup) or not self._save_content(news_data, soup):
             return
 
-        self._save_content(news_data, soup)
+        # self._save_content(news_data, soup)
         self._save_misc_data(news_data, soup)
 
         self.saved_data.append(news_data)
