@@ -60,6 +60,10 @@ class BaseScraper:
     def get_links_by_exploring(self, max_level : int = 1):
         pass
 
+    def start_scraping(self, level : int = 1):
+        self.get_links_by_exploring(level)
+        self.save_news()
+
     def get_news_links(self):
         return self.cached_links
         

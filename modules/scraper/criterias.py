@@ -12,6 +12,8 @@ ELMOSTRADOR_NEWS_SELECTOR = {
     },
     "image_url": {"tag": "img", "identifier_attrib": "class", "attrib_value": "d-the-single-media__image"},
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "d-the-single-wrapper__text"},
+    # so different!!!!!!!!!
+    "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-section__body | common:margin-top-30"}
 }
 
 TVN_SELECTOR = {
@@ -143,6 +145,12 @@ COOPERATIVA_SELECTOR = {
     "common_irrelevant_tags": {
         "tags" : ["div"],
         "classes": ["modulo-lee"],
+    },
+
+    "news_tags": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "rotulo-topicos",
     }
 }
 
@@ -160,7 +168,7 @@ ELMOSTRADOR = {
     "url": "https://www.elmostrador.cl/categoria/pais/",
     "tag": "section",
     "identifier_attrib": "id",
-    "attrib_value": "clave",
+    "attrib_value": "claves",
     # num goes here.
     "explore_path": "categoria/pais/page/page_num/",
     "forbidden_paths": ["/autores/", "/autor/", "/page/", "/multimedia/", "/opinion/"],

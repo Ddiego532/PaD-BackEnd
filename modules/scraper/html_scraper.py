@@ -1,6 +1,5 @@
 from base_scraper import BaseScraper, BeautifulSoup
 from helpers import is_valid, is_absolute, get_element_by_identifier_attribute
-from criterias import *
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):
@@ -49,7 +48,3 @@ class HTMLScraper(BaseScraper):
                 continue
 
             self.cached_links.add(href)
-
-scrap = HTMLScraper(COOPERATIVA)
-scrap.get_links_by_exploring(5)
-scrap.save_news()

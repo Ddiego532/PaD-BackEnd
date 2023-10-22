@@ -177,16 +177,19 @@ class NewsSaver:
         news_tags = sel.get("news_tags", None)
         if not news_tags: return
 
-        element = get_tag(news_tags, soup)
+        element : Tag = get_tag(news_tags, soup)
 
         if not element: return
         data["tags"] = []
-    
-        for refs in element.children:
-            text = refs.get_text(strip=True)
-            if len(text) <= 0 or ("..." in text): continue
 
-            data["tags"].append(text.lower())
+        # they are usually an href element.
+        for refs in element.find_all("a"):
+            text : str = refs.get_text(strip=True)
+            if len(text) <= 0 or ("..." in text): continue
+            # clean text.
+            cleaned_text = text.replace("|", "").lower().strip()
+
+            data["tags"].append(cleaned_text)
 
     # retrieve this data first and then dump it.
     def save_to_dict(self, soup : BeautifulSoup):
