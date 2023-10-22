@@ -3,5 +3,5 @@ from criterias import *
 
 EXAMPLE_LEVEL = 5
 
-elmostrador = HTMLScraper(ELMOSTRADOR)
+elmostrador = HTMLScraper(ELDINAMO)
 elmostrador.start_scraping(EXAMPLE_LEVEL)

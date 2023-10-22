@@ -154,6 +154,59 @@ COOPERATIVA_SELECTOR = {
     }
 }
 
+ELDINAMO_SELECTOR = {
+    "text_data": {
+        "title": {
+            "parent": {
+                "tag": "article",
+                "identifier_attrib": "class",
+                "attrib_value": "principal",
+            },
+            "tag": "h1",
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "identifier_attrib": "class",
+            "attrib_value": "bajada",
+        },
+
+        "date": {
+            "tag": "span",
+            "identifier_attrib": "class",
+            "attrib_value": "fecha",
+        },
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "the-content",
+    },
+
+    "image_url": {
+        # we use the parent here instead of the imgs class as it can change.
+        "parent": {
+            "tag": "div",
+            "identifier_attrib": "class",
+            "attrib_value": "imagen-principal"
+        },
+
+        "tag": "img",
+    },
+
+    "common_irrelevant_tags": {
+        "tags": ["aside"],
+        "classes": ["bloque-tc-tres-recomendados"]
+    },
+
+    "news_tags": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "tags",
+    }
+}
+
 TELETRECE = {
     "url": "https://www.t13.cl/politica",
     "tag": "div",
@@ -223,7 +276,6 @@ TVN_NOTICIAS = {
     "explore_path": "actualidad/politica/p/page_num",
     "forbidden_paths": ["/p/"],
     "news_selector": TVN_SELECTOR,
-    "ignore_content_ids": ["prontus-card-content"]
 }
 
 COOPERATIVA = {
@@ -235,4 +287,15 @@ COOPERATIVA = {
     "attrib_value": "display:table;margin: 35px 0;",
     "forbidden_paths": ["/tax/"],
     "news_selector": COOPERATIVA_SELECTOR,
+}
+
+ELDINAMO = {
+    "url": "https://www.eldinamo.cl/politica/",
+    "tag": "section",
+    "identifier_attrib": "class",
+    "attrib_value": "listado",
+    "explore_path": "politica/page/page_num/",
+    "news_selector": ELDINAMO_SELECTOR,
+    # we don't care about these links.
+    "forbidden_paths": ["/page/"]
 }
