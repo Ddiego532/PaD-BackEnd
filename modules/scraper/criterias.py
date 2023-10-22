@@ -2,6 +2,8 @@
 # TODO: Swap forbidden_paths to accepted_paths.
 
 # EL MOSTRADOR HANDLER.
+# FORMATO DE SELECTOR.
+
 ELMOSTRADOR_NEWS_SELECTOR = {
     "text_data": {
         "title": {
@@ -110,6 +112,43 @@ CNN_SELECTOR = {
 }
 
 LATERCERA_SELECTOR = {
+    "text_data": {
+        # whitespace goofy ahh moment
+        "title": {
+            "tag": "div",
+            "class": "hl"
+        },
+
+        "date": {
+            "tag": "time",
+            "class": "p-left-10"
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "class": "excerpt",
+        }
+    },
+
+    "image_url": {
+        "parent": {
+            "tag": "div",
+            "class": "full-image",
+        },
+
+        "tag": "img",
+    },
+
+    "content": {
+        "tag": "div",
+        "class": "single-content"
+    },
+
+    "common_irrelevant_tags": {
+        "tags": ["aside", "div"],
+        "classes": ["offer-content", "links | story_links"]
+    },
+
     "news_tags": {
         "tag": "ul",
         "class": "list-cat-y-tags",
@@ -145,6 +184,8 @@ LATERCERA = {
     "class": "top-mainy",
     # this differs
     "explore_path": "categoria/politica/page/page_num/",
+    "news_selector": LATERCERA_SELECTOR,
+    "forbidden_paths": ["/autor/", "/categoria/"]
 }
 
 # i should guess biobio and cnn are somewhat kinda similar.

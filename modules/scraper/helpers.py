@@ -65,10 +65,13 @@ def get_tag(data : dict, soup):
         return get_element_by_id_or_class(data, soup)
 
     parent_element = get_element_by_id_or_class(parent_data, soup)
-    first = parent_element.find(data["tag"])
 
-    if first is not None:
-        return first
+    # nested ahh thing
+    if parent_element:
+        first = parent_element.find(data["tag"])
+
+        if first is not None:
+            return first
     
     # worst case.
     return None

@@ -181,7 +181,7 @@ class NewsSaver:
     
         for refs in element.children:
             text = refs.get_text(strip=True)
-            if len(text) <= 0: continue
+            if len(text) <= 0 or ("..." in text): continue
 
             data["tags"].append(text.lower())
 
