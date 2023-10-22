@@ -79,6 +79,38 @@ TELETRECE_SELECTOR = {
     }
 }
 
+BIOBIOCHILE_SELECTOR = {
+    "text_data": {
+        "title" : {"tag": "h1", "identifier_attrib": "class", "attrib_value": "post-title"},
+        "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "post-excerpt"},
+        "date": {"tag": "div", "identifier_attrib": "class", "attrib_value": "post-date"}
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "post-content clearfix",
+    },
+
+    # watch me im different!!!!
+    "image_url": {
+        "parent": {
+            "tag": "div",
+            "identifier_attrib": "class",
+            "attrib_value" : "post-image",
+        },
+
+        "tag": "a",
+        "forced_src": "href",
+    },
+
+    "common_irrelevant_tags": {
+        # we used the excerpt at this time so we can delete it easily.
+        "tags": ["div", "div"],
+        "classes": ["lee-tambien-bbcl", "post-excerpt"]
+    }
+}
+
 TELETRECE = {
     "url": "https://www.t13.cl/politica",
     "tag": "div",
@@ -102,11 +134,13 @@ ELMOSTRADOR = {
 }
 
 BIOBIOCHILE = {
-    "url": "https://www.biobiochile.cl/lista/tag/politica",
+    # politica esta lleno de cosas random xd
+    "url": "https://www.biobiochile.cl/lista/categorias/nacional",
     "tag": "div",
     "identifier_attrib": "class",
     "attrib_value": "section-body",
     "forbidden_paths": ["/autores/", "/biobiotv/", "/opinion/", "/especial/"],
+    "news_selector": BIOBIOCHILE_SELECTOR
 }
 
 LATERCERA = {

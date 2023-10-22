@@ -56,8 +56,7 @@ def get_element_by_identifier_attribute(data : dict, soup):
         raise ValueError("Identifier can't be null.")
     
     id_value = data.get("attrib_value")
-        # id, has_id = data.get("class", None), False
-    
+
     return soup.find(data["tag"], {id : id_value})
 
 def get_tag(data : dict, soup):

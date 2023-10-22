@@ -132,11 +132,14 @@ class NewsSaver:
         return True
     
     def _save_multimedia(self, data : dict, soup: BeautifulSoup):
-        image = get_tag(self.news_selector["image_url"], soup)
+        image_data : dict = self.news_selector["image_url"]
+        
+        # get data.
+        image = get_tag(image_data, soup)
         if not image: return
     
         # get source.
-        source = image.get("src")
+        source = image.get(image_data.get("forced_src", "src"))
         
         # get the absolute path.
         if not is_absolute(source):
@@ -171,7 +174,7 @@ class NewsSaver:
         data["source"] = self.source_url
     
         # the tags.
-        news_tags = sel["news_tags"]
+        news_tags = sel.get("news_tags", None)
         if not news_tags: return
 
         element = get_tag(news_tags, soup)
