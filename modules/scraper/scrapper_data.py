@@ -217,6 +217,9 @@ class NewsSaver:
 
         self.saved_data.append(news_data)
 
+    def get_saved_data(self):
+        return self.saved_data
+
     def save_to_json(self, clear_data : bool = True): 
         with open(f"{self.filename}.json", "w", encoding="utf-8") as json_file:
             json.dump(self.saved_data, json_file, ensure_ascii=False, indent=4)

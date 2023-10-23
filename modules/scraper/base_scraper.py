@@ -47,10 +47,7 @@ class BaseScraper:
 
             self.news_saver.save_to_dict(conn)
 
-            # soup = BeautifulSoup(conn.text, "lxml")
-            #self.news_saver.save_to_dict(soup, news_link)
-
-        self.news_saver.save_to_json()
+        print("Finished saving news in memory.")
 
     # force to go to a single url.
     def _connect_and_add_sublinks(self, url : str):

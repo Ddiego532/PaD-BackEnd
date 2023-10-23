@@ -74,6 +74,16 @@ def get_tag(data : dict, soup):
 
         if first is not None:
             return first
+        
+    # no parent so use fallback.
+    fallback_data = data.get("fallback", None)
+
+    if fallback_data:
+        fallback_tag = get_element_by_identifier_attribute(fallback_data, soup)
+
+        print(fallback_tag.find(data["tag"]), "Xddddd")
+
+        return fallback_tag.find(data["tag"])
     
     # worst case.
     return None
