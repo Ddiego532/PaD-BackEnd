@@ -81,8 +81,6 @@ def get_tag(data : dict, soup):
     if fallback_data:
         fallback_tag = get_element_by_identifier_attribute(fallback_data, soup)
 
-        print(fallback_tag.find(data["tag"]), "Xddddd")
-
         return fallback_tag.find(data["tag"])
     
     # worst case.
