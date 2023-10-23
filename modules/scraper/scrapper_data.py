@@ -1,9 +1,10 @@
-from helpers import get_element_by_identifier_attribute, get_tag, is_absolute, get_joined_url, get_filename_by_domain
+# TODO: Acortar esto.
+from helpers import get_meta_content, get_element_by_identifier_attribute, get_tag
+from helpers import is_absolute, get_joined_url, get_filename_by_domain, create_json_file
 from scraper_constants import PARSE_MODE
 from requests import Response
 # only for fixing helpers args.
 from bs4 import BeautifulSoup, Tag
-import json
 
 def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
     bad_content : dict = criteria.get("common_irrelevant_tags", None)
@@ -32,25 +33,6 @@ def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
             child.decompose()
 
     return True
-
-"""
-def remove_irrelevant_data(tag_element : Tag, criteria : dict):
-    bad_content : dict = criteria.get("common_irrelevant_tag", None)
-
-    # not removed.
-    if bad_content is None:
-        return False
-    
-    tag = bad_content["tag"]
-    class_id = bad_content["class"]
-
-    data = tag_element.find_all(tag, {"class" : class_id})
-    
-    if data is not None:
-        for child in data:
-            child.decompose()
-
-    return True"""
 
 # basically a robots.txt checker.
 class RobotsParser:
@@ -125,7 +107,13 @@ class NewsSaver:
             element = get_tag(value, soup)
 
             # not a news page.
-            if element is None: 
+            # prolly mega noticias.
+            # TODO: Refactor.
+            if (element is None):
+                # if subtitle empty then we go.
+                if (key == "subtitle"):
+                    continue
+             
                 return False
 
             text = element.text
@@ -134,18 +122,23 @@ class NewsSaver:
         return True
     
     def _save_multimedia(self, data : dict, soup: BeautifulSoup):
-        image_data : dict = self.news_selector["image_url"]
+        # check if exists on meta first.
+        source = get_meta_content("image", soup)
+
+        # not on meta, so use the tags.
+        if not source:
+            image_data : dict = self.news_selector["image_url"]
+            
+            # get data.
+            image = get_tag(image_data, soup)
+            if not image: return
         
-        # get data.
-        image = get_tag(image_data, soup)
-        if not image: return
-    
-        # get source.
-        source = image.get(image_data.get("forced_src", "src"))
-        
-        # get the absolute path.
-        if not is_absolute(source):
-            source = get_joined_url(self.source_url, source)
+            # get source.
+            source = image.get(image_data.get("forced_src", "src"))
+            
+            # get the absolute path.
+            if not is_absolute(source):
+                source = get_joined_url(self.source_url, source)
 
         data["image"] = source
 
@@ -221,8 +214,7 @@ class NewsSaver:
         return self.saved_data
 
     def save_to_json(self, clear_data : bool = True): 
-        with open(f"{self.filename}.json", "w", encoding="utf-8") as json_file:
-            json.dump(self.saved_data, json_file, ensure_ascii=False, indent=4)
+        create_json_file(self.filename, self.saved_data)
 
         if clear_data:
             self.saved_data.clear()

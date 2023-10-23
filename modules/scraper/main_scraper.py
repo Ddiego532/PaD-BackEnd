@@ -1,8 +1,23 @@
 from html_scraper import HTMLScraper
+from helpers import create_json_file
 from criterias import *
 
-EXAMPLE_LEVEL = 5
+EXAMPLE_LEVEL = 1
+LIST_OF_SOURCES = [TELETRECE, ELDINAMO, ELMOSTRADOR, CNNCHILE, TVN_NOTICIAS,
+                BIOBIOCHILE, LATERCERA, MEGANOTICIAS, ASCOM, COOPERATIVA]
 
-teletrece = HTMLScraper(TELETRECE)
-teletrece.start_scraping(EXAMPLE_LEVEL)
-teletrece.news_saver.save_to_json()
+ref_list = []
+
+for webpage in LIST_OF_SOURCES:
+    scrapper_obj = HTMLScraper(webpage)
+    scrapper_obj.start_scraping()
+
+    news_saver = scrapper_obj.get_news_saver()
+
+    ref_list.extend(news_saver.get_saved_data())
+
+create_json_file("all_news", ref_list)
+
+#teletrece = HTMLScraper(TELETRECE)
+#teletrece.start_scraping(EXAMPLE_LEVEL)
+#teletrece.news_saver.save_to_json()

@@ -49,6 +49,9 @@ class BaseScraper:
 
         print("Finished saving news in memory.")
 
+    def get_news_saver(self):
+        return self.news_saver
+
     # force to go to a single url.
     def _connect_and_add_sublinks(self, url : str):
         pass

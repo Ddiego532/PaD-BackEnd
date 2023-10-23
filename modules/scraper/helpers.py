@@ -1,6 +1,8 @@
 from requests import Session, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
+import os
+import json
 
 # define constants.
 # GET AND POST SUCCESS CODES.
@@ -86,6 +88,16 @@ def get_tag(data : dict, soup):
     # worst case.
     return None
 
+def get_meta_content(property : str, soup):
+    # usually we should format this.
+    tag_prop = f"og:{property}"
+    meta = soup.find("meta", {"property": tag_prop})
+
+    if meta:
+        return meta.get("content")
+
+    return None
+
 def are_elements_in_another_list(source_list : list, target_list: list):
     return any(elem in target_list for elem in source_list)
 
@@ -95,3 +107,14 @@ def get_filename_by_domain(url : str):
     
     # replace dots with that because we don't want issues.
     return netloc.replace(".", "_")
+
+FILE_PATH = os.path.dirname(os.path.realpath(__file__))
+OUTPUT_PATH = os.path.join(FILE_PATH, "output_data")
+
+def create_json_file(filename : str, data : any):
+    # ensure that we are not having any issues.
+    if not os.path.isdir(OUTPUT_PATH):
+        os.mkdir(OUTPUT_PATH)
+
+    with open(os.path.join(OUTPUT_PATH, f"{filename}.json"), "w", encoding="utf-8") as json_file:
+        json.dump(data, json_file, ensure_ascii=False, indent=4)

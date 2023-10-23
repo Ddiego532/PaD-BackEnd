@@ -4,6 +4,39 @@
 # EL MOSTRADOR HANDLER.
 # FORMATO DE SELECTOR.
 
+MEGANOTICIAS_SELECTOR = {
+    "text_data": {
+        "title": {
+            # considering use the meta tag.
+            "parent": {
+                "tag": "div",
+                "identifier_attrib": "class",
+                "attrib_value": "contenedor-contenido",
+            },
+
+            "tag": "h1",
+        },
+
+        "date": {
+            "parent": {
+                "tag": "div",
+                "identifier_attrib": "class",
+                "attrib_value": "fechaHora",
+            },
+
+            "tag": "time",
+        }
+    },
+
+    "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "contenido-nota"},
+    "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "contenedor-temas"},
+
+    "common_irrelevant_tags": {
+        "tags": ["div", "a"],
+        "classes": ["relacionados", "btn-temas evento-TodoSobre"]
+    }
+}
+
 ELMOSTRADOR_NEWS_SELECTOR = {
     "text_data": {
         "title": {"tag": "h1", "identifier_attrib": "class", "attrib_value": "d-the-single__title | common:margin-bottom-25"},
@@ -11,13 +44,7 @@ ELMOSTRADOR_NEWS_SELECTOR = {
         "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "d-the-single__excerpt | u-fw-600"},
     },
 
-    "image_url": {
-        "tag": "meta",
-        "identifier_attrib": "property",
-        "attrib_value": "og:image",
-        "forced_src": "content",
-    },
-
+    # i have an idea.
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "d-the-single-wrapper__text"},
     # so different!!!!!!!!!
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-section__body | common:margin-top-30"}
@@ -28,13 +55,6 @@ TVN_SELECTOR = {
         "title": {"tag": "h1", "identifier_attrib": "id", "attrib_value": "#contenido-ppal"},
         "date": {"tag": "p", "identifier_attrib": "class", "attrib_value": "fecha"},
         "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "baj"},
-    },
-
-    "image_url": {
-        "tag": "meta",
-        "identifier_attrib": "property",
-        "attrib_value": "og:image",
-        "forced_src": "content",
     },
 
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "CUERPO"},
@@ -48,12 +68,7 @@ CNN_SELECTOR = {
         "date": {"tag": "span", "identifier_attrib": "class", "attrib_value": "main-single-about__item main-single__date"},
         "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-header__excerpt"}
     },
-    "image_url": {
-        "tag": "meta",
-        "identifier_attrib": "property",
-        "attrib_value": "og:image",
-        "forced_src": "content",
-    },
+
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-body__content"},
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-tags__list"}
 }
@@ -62,8 +77,6 @@ LATERCERA_SELECTOR = {
     "text_data": {"title": {"tag": "div", "identifier_attrib": "class", "attrib_value": "hl"},
                   "date": {"tag": "time", "identifier_attrib": "class", "attrib_value": "p-left-10"},
                   "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "excerpt"}},
-    "image_url": {"parent": {"tag": "div", "identifier_attrib": "class", "attrib_value": "full-image"},
-                  "tag": "img"},
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "single-content"},
     "common_irrelevant_tags": {"tags": ["aside", "div"], "classes": ["offer-content", "links | story_links"]},
     "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "list-cat-y-tags"},
@@ -74,18 +87,13 @@ TELETRECE_SELECTOR = {
                   "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "article-component__lead"},
                   "date": {"tag": "time", "identifier_attrib": "itemprop", "attrib_value": "datePublished"}},
 
-    "image_url": {
-        "tag": "meta",
-        "identifier_attrib": "property",
-        "attrib_value": "og:image",
-        "forced_src": "content",
-    },
-
     "content": {"tag": "div", "identifier_attrib": "id", "attrib_value": "article-body-wrapper"},
+
     "common_irrelevant_tags": {
         "tags": ["div"],
         "classes": ["article-component__read"],
     },
+
     "news_tags": {
         "parent": {
             "tag": "div", 
@@ -108,18 +116,6 @@ BIOBIOCHILE_SELECTOR = {
         "tag": "div",
         "identifier_attrib": "class",
         "attrib_value": "post-content clearfix",
-    },
-
-    # watch me im different!!!!
-    "image_url": {
-        "parent": {
-            "tag": "div",
-            "identifier_attrib": "class",
-            "attrib_value" : "post-image",
-        },
-
-        "tag": "a",
-        "forced_src": "href",
     },
 
     "common_irrelevant_tags": {
@@ -148,14 +144,6 @@ COOPERATIVA_SELECTOR = {
         "tag": "div",
         "identifier_attrib": "id",
         "attrib_value": "cuerpo-ad",
-    },
-
-    # another one being different woo!!!
-    "image_url": {
-        "tag": "meta",
-        "identifier_attrib": "rel",
-        "attrib_value": "image_src",
-        "forced_src": "href",
     },
 
     "common_irrelevant_tags": {
@@ -200,17 +188,6 @@ ELDINAMO_SELECTOR = {
         "attrib_value": "the-content",
     },
 
-    "image_url": {
-        # we use the parent here instead of the imgs class as it can change.
-        "parent": {
-            "tag": "div",
-            "identifier_attrib": "class",
-            "attrib_value": "imagen-principal"
-        },
-
-        "tag": "img",
-    },
-
     "common_irrelevant_tags": {
         "tags": ["aside"],
         "classes": ["bloque-tc-tres-recomendados"]
@@ -252,15 +229,6 @@ ASCOM_SELECTOR = {
         "tag": "div",
         "identifier_attrib": "class",
         "attrib_value": "art__m-cnt",
-    },
-
-    "image_url": {
-        "parent": {
-            "tag": "div",
-            "identifier_attrib": "class",
-            "attrib_value": "art__m-cnt",
-        },
-        "tag": "img"
     },
 
     "news_tags": {
@@ -333,7 +301,8 @@ MEGANOTICIAS = {
     "identifier_attrib": "class",
     "attrib_value": "notas",
     "explore_path": "temas/politica/?page=page_num",
-    "forbidden_paths": ["/mundo/", "/temas/"]
+    "forbidden_paths": ["/mundo/", "/temas/"],
+    "news_selector": MEGANOTICIAS_SELECTOR
 }
 
 TVN_NOTICIAS = {

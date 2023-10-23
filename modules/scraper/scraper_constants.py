@@ -1,2 +1,2 @@
 EMPTY_LIST = []
-PARSE_MODE = "lxml"
+PARSE_MODE = "lxml",
