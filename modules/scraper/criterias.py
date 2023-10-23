@@ -10,7 +10,14 @@ ELMOSTRADOR_NEWS_SELECTOR = {
         "date": {"tag": "time", "identifier_attrib": "class", "attrib_value": "d-the-single__date | common:margin-bottom-20"},
         "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "d-the-single__excerpt | u-fw-600"},
     },
-    "image_url": {"tag": "img", "identifier_attrib": "class", "attrib_value": "d-the-single-media__image"},
+
+    "image_url": {
+        "tag": "meta",
+        "identifier_attrib": "property",
+        "attrib_value": "og:image",
+        "forced_src": "content",
+    },
+
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "d-the-single-wrapper__text"},
     # so different!!!!!!!!!
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-section__body | common:margin-top-30"}
@@ -22,10 +29,14 @@ TVN_SELECTOR = {
         "date": {"tag": "p", "identifier_attrib": "class", "attrib_value": "fecha"},
         "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "baj"},
     },
+
     "image_url": {
-        "parent": {"tag": "div", "identifier_attrib": "class", "attrib_value": "img-wrap"},
-        "tag": "img",
+        "tag": "meta",
+        "identifier_attrib": "property",
+        "attrib_value": "og:image",
+        "forced_src": "content",
     },
+
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "CUERPO"},
     "common_irrelevant_tags": {"tags": ["div"], "classes": ["prontus-card-container"]},
     "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "tags"},
@@ -37,7 +48,12 @@ CNN_SELECTOR = {
         "date": {"tag": "span", "identifier_attrib": "class", "attrib_value": "main-single-about__item main-single__date"},
         "subtitle": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-header__excerpt"}
     },
-    "image_url": {"tag": "img", "identifier_attrib": "class", "attrib_value": "main-single-body__image js-img-single"},
+    "image_url": {
+        "tag": "meta",
+        "identifier_attrib": "property",
+        "attrib_value": "og:image",
+        "forced_src": "content",
+    },
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "main-single-body__content"},
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-tags__list"}
 }
