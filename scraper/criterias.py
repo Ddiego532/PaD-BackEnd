@@ -236,8 +236,8 @@ ASCOM_SELECTOR = {
     },
 
     "irrelevant_tags": {
-        "tags": ["div", "figcaption"],
-        "classes": ["ext ext-embed", "mm__cap"]
+        "tags": ["div", "figcaption", "a"],
+        "classes": ["ext ext-embed", "mm__cap", "stream-panel-content"]
     }
 }
 
