@@ -75,7 +75,7 @@ class NewsSaver:
     
     def _save_multimedia(self, data : dict, soup: NewsSoup):
         # check if exists on meta first.
-        source = soup.get_meta_content("image")
+        source = soup.get_meta_og_content("image")
 
         # not on meta, so use the tags.
         if not source:
@@ -127,7 +127,15 @@ class NewsSaver:
         sel = self.news_selector
         data["source"] = self.source_url
         data["full_source"] = page_source
-    
+
+        # find tags and then check by criteria.
+        keywords = soup.scrap_keywords()
+
+        # it exists so don't go further.
+        if keywords:
+            data["tags"] = keywords
+            return
+
         # the tags.
         news_tags = sel.get("news_tags", None)
         if not news_tags: return

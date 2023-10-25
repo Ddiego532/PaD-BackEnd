@@ -46,8 +46,6 @@ ELMOSTRADOR_NEWS_SELECTOR = {
 
     # i have an idea.
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "d-the-single-wrapper__text"},
-    # so different!!!!!!!!!
-    "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "the-section__body | common:margin-top-30"}
 }
 
 TVN_SELECTOR = {
@@ -270,8 +268,8 @@ ADNCL_SELECTOR = {
     },
 
     "irrelevant_tags": {
-        "tags": ["div"],
-        "classes": ["ned-ad-dynamic"]
+        "tags": ["div", "section"],
+        "classes": ["ned-ad-dynamic", "recommended-articles"]
     },
 }
 

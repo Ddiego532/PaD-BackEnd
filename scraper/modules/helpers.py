@@ -88,3 +88,9 @@ def get_kv_by_string(search : str, string : str):
             return mapped[1]
         
     return None
+
+def get_tags_from_str(content : str):
+    # clean text.
+    cleaned = content.strip()
+    stripped = cleaned.split(",")
+    return [word.lower() for word in stripped]

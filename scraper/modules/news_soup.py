@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, Tag
 from bs4.builder import TreeBuilder
 from bs4.element import PageElement as PageElement, SoupStrainer as SoupStrainer
 from .constants import PARSE_MODE, GOOD_JSON, MALFORMED_JSON
-from .helpers import get_kv_by_string
+from .helpers import get_kv_by_string, get_tags_from_str
 import json
 
 class NewsSoup(BeautifulSoup):
@@ -118,8 +118,12 @@ class NewsSoup(BeautifulSoup):
         
         # worst case.
         return None
+    
+    def get_meta_content(self, key : str, val : str) -> list[PageElement] | None:
+        meta = self.find("meta", {key : val})
+        return meta.get("content") if meta else None
 
-    def get_meta_content(self, property : str):
+    def get_meta_og_content(self, prop : str):
         """
         Busca en las etiquetas meta que posean una propiedad de tipo "og".
 
@@ -128,14 +132,16 @@ class NewsSoup(BeautifulSoup):
         returns:
             content : str | None - El contenido de la etiqueta meta seleccionada.
         """
-        # usually we should format this.
-        tag_prop = f"og:{property}"
-        meta = self.find("meta", {"property": tag_prop})
+        return self.get_meta_content("property", f"og:{prop}")
+    
+    # its a news soup, so it makes sense that this method belongs here.
+    def scrap_keywords(self):
+        # check if exists on meta first.
+        meta_content = self.get_meta_content("name", "keywords")
+        return get_tags_from_str(meta_content) if meta_content else None
 
-        if meta:
-            return meta.get("content")
+        
 
-        return None
         
 
     
