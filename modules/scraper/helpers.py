@@ -83,8 +83,6 @@ def get_kv_by_string(search : str, string : str):
         key = mapped[0]
         key = key.replace('"', '').strip()
 
-        print(key, search)
-
         if key == search:
             return mapped[1]
         
