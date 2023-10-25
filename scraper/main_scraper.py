@@ -8,14 +8,6 @@ LIST_OF_SOURCES = [TELETRECE, ELDINAMO, ELMOSTRADOR, CNNCHILE, TVN_NOTICIAS,
 
 print(len(LIST_OF_SOURCES))
 
-scrap = HTMLScraper(BIOBIOCHILE)
-scrap.start_scraping()
-
-news_saver = scrap.get_news_saver()
-news_saver.save_to_json()
-
-
-"""
 ref_list = []
 
 for webpage in LIST_OF_SOURCES:
@@ -26,4 +18,4 @@ for webpage in LIST_OF_SOURCES:
 
     ref_list.extend(news_saver.get_saved_data())
 
-create_json_file("all_news", ref_list)"""
+create_json_file("all_news", ref_list)

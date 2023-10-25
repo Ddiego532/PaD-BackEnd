@@ -1,6 +1,7 @@
 # TODO: Acortar esto.
 from .helpers import is_absolute, get_joined_url, get_filename_by_domain, create_json_file
 from requests import Response
+from .news_data_handler import NewsDataFinder
 # only for fixing helpers args.
 from .news_soup import NewsSoup, Tag
 
@@ -44,130 +45,88 @@ class NewsSaver:
 
     # really considering those 2 as an attribute.
     # this is the most important one.
-    def _save_primary_data(self, data : dict, soup : NewsSoup):
-        text_data = self.news_selector["text_data"]
+    def _save_primary_data(self, data : dict, finder: NewsDataFinder):
+        title = finder.find_title()
+        # this may be present sometimes.
+        subtitle = finder.find_subtitles()
+        date = finder.find_date()
 
-        # iterate the text stuff.
-        for key in text_data:
-            # special handler.
-            # we dont care about these ones.
-            value : dict = text_data[key]
-            element = soup.find_tag_by_criteria(value)
-
-            # not a news page.
-            # prolly mega noticias.
-            # TODO: Refactor.
-            if (element is None):
-                # if subtitle empty then we go.
-                if (key == "subtitle"):
-                    continue
-             
-                return False
-            
-            text = element
-
-            if hasattr(element, "text"):
-                text = element.text
-
-            data[key] = text.strip()
+        if not (title or date):
+            print(f"The requested news doesn't have a ", "title." if title is None else "date.")
+            return False
+        
+        data["title"] = title
+        data["subtitle"] = subtitle
+        data["date"] = date
 
         return True
     
-    def _save_multimedia(self, data : dict, soup: NewsSoup):
+    def _save_multimedia(self, data : dict, finder : NewsDataFinder):
         # check if exists on meta first.
-        source = soup.get_meta_og_content("image")
+        image = finder.find_representative_image(self.source_url)
 
-        # not on meta, so use the tags.
-        if not source:
-            image_data : dict = self.news_selector["image_url"]
-            
-            # get data.
-            image = soup.find_tag_by_criteria(image_data)
-            if not image: return
-        
-            # get source.
-            source = image.get(image_data.get("forced_src", "src"))
-            
-            # get the absolute path.
-            if not is_absolute(source):
-                source = get_joined_url(self.source_url, source)
+        if image:
+            data["image"] = image
 
-        data["image"] = source
+    def __extract_content(self, soup : NewsSoup):
+        content_node = soup.find_tag_by_criteria(self.news_selector["content"])
 
-    def _save_content(self, data : dict, soup : NewsSoup):
-        sel = self.news_selector
-        
-        # could be images or video.
-        self._save_multimedia(data, soup)
-    
-        # here we save the content.
-        content = soup.find_tag_by_criteria(sel["content"])
-
-        # nothing to save here.
-        if content is None:
-            return False
+        if content_node is None:
+            return None
 
         content_text = ""
 
-        remove_multiple_irrelevant_data(content, sel)
+        # to extract it properly we should remove the unneeded data like ads or something.
+        remove_multiple_irrelevant_data(content_node, self.news_selector)
 
-        for elem in content.find_all(recursive=False):
+        # extract paragraphs, headings, etc...
+        for elem in content_node.find_all(recursive=False):
             if elem is None: continue
 
             text = elem.get_text(strip=True)
             content_text += text
 
+        return content_text
+
+    def _save_content(self, data : dict, soup : NewsSoup):
+        # could be images or video.
+        content = self.__extract_content(soup)
+
+        if not content:
+            print("There is no content to save. Nullifying saving...")
+            return False
+
         # append this data to dictionary.
-        data["content"] = content_text
+        data["content"] = content
 
         return True
 
-    def _save_misc_data(self, data : dict, soup : NewsSoup, page_source : str = ""):
+    def _save_misc_data(self, data : dict, finder : NewsDataFinder, page_source : str = ""):
         # where it comes.
-        sel = self.news_selector
         data["source"] = self.source_url
         data["full_source"] = page_source
 
-        # find tags and then check by criteria.
-        keywords = soup.scrap_keywords()
+        tags = finder.find_tags()
 
-        # it exists so don't go further.
-        if keywords:
-            data["tags"] = keywords
-            return
-
-        # the tags.
-        news_tags = sel.get("news_tags", None)
-        if not news_tags: return
-
-        element = soup.find_tag_by_criteria(news_tags)
-
-        if not element: return
-        data["tags"] = []
-
-        # they are usually an href element.
-        for refs in element.find_all("a"):
-            text : str = refs.get_text(strip=True)
-            if len(text) <= 0 or ("..." in text): continue
-            # clean text.
-            cleaned_text = text.replace("|", "").lower().strip()
-
-            data["tags"].append(cleaned_text)
-
+        if tags and len(tags) > 0:
+            data["tags"] = tags
 
     # retrieve this data first and then dump it.
     def save_to_dict(self, conn_data : Response):
         # the stuff we save here.
         news_data = dict()
-        soup = NewsSoup(markup=conn_data.text)
+        soup = NewsSoup(markup=conn_data.text, from_encoding="utf-8")
+
+        # important thing if we want to get the proper data.
+        finder = NewsDataFinder(soup, self.news_selector)
 
         # can't save.
-        if not self._save_primary_data(news_data, soup) or not self._save_content(news_data, soup):
+        if not self._save_primary_data(news_data, finder) or not self._save_content(news_data, soup):
+            print(f"The {conn_data.url} news can't be saved.")
             return
 
-        # self._save_content(news_data, soup)
-        self._save_misc_data(news_data, soup, conn_data.url)
-
+        self._save_multimedia(news_data, finder)
+        self._save_misc_data(news_data, finder, conn_data.url)
         self.saved_data.append(news_data)
 
     def get_saved_data(self):
