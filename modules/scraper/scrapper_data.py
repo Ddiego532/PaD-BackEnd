@@ -1,10 +1,9 @@
 # TODO: Acortar esto.
-from helpers import get_meta_content, get_element_by_identifier_attribute, get_tag
 from helpers import is_absolute, get_joined_url, get_filename_by_domain, create_json_file
 from scraper_constants import PARSE_MODE
 from requests import Response
 # only for fixing helpers args.
-from bs4 import BeautifulSoup, Tag
+from news_soup import NewsSoup, Tag
 
 def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
     bad_content : dict = criteria.get("common_irrelevant_tags", None)
@@ -96,7 +95,7 @@ class NewsSaver:
 
     # really considering those 2 as an attribute.
     # this is the most important one.
-    def _save_primary_data(self, data : dict, soup : BeautifulSoup):
+    def _save_primary_data(self, data : dict, soup : NewsSoup):
         text_data = self.news_selector["text_data"]
 
         # iterate the text stuff.
@@ -104,7 +103,7 @@ class NewsSaver:
             # special handler.
             # we dont care about these ones.
             value : dict = text_data[key]
-            element = get_tag(value, soup)
+            element = soup.find_tag_by_criteria(value)
 
             # not a news page.
             # prolly mega noticias.
@@ -115,22 +114,26 @@ class NewsSaver:
                     continue
              
                 return False
+            
+            text = element
 
-            text = element.text
+            if hasattr(element, "text"):
+                text = element.text
+
             data[key] = text.strip()
 
         return True
     
-    def _save_multimedia(self, data : dict, soup: BeautifulSoup):
+    def _save_multimedia(self, data : dict, soup: NewsSoup):
         # check if exists on meta first.
-        source = get_meta_content("image", soup)
+        source = soup.get_meta_content("image")
 
         # not on meta, so use the tags.
         if not source:
             image_data : dict = self.news_selector["image_url"]
             
             # get data.
-            image = get_tag(image_data, soup)
+            image = soup.find_tag_by_criteria(image_data)
             if not image: return
         
             # get source.
@@ -142,14 +145,14 @@ class NewsSaver:
 
         data["image"] = source
 
-    def _save_content(self, data : dict, soup : BeautifulSoup):
+    def _save_content(self, data : dict, soup : NewsSoup):
         sel = self.news_selector
         
         # could be images or video.
         self._save_multimedia(data, soup)
     
         # here we save the content.
-        content = get_element_by_identifier_attribute(sel["content"], soup)
+        content = soup.find_tag_by_criteria(sel["content"])
 
         # nothing to save here.
         if content is None:
@@ -170,7 +173,7 @@ class NewsSaver:
 
         return True
 
-    def _save_misc_data(self, data : dict, soup : BeautifulSoup, page_source : str = ""):
+    def _save_misc_data(self, data : dict, soup : NewsSoup, page_source : str = ""):
         # where it comes.
         sel = self.news_selector
         data["source"] = self.source_url
@@ -180,7 +183,7 @@ class NewsSaver:
         news_tags = sel.get("news_tags", None)
         if not news_tags: return
 
-        element : Tag = get_tag(news_tags, soup)
+        element = soup.find_tag_by_criteria(news_tags)
 
         if not element: return
         data["tags"] = []
@@ -199,7 +202,7 @@ class NewsSaver:
     def save_to_dict(self, conn_data : Response):
         # the stuff we save here.
         news_data = dict()
-        soup = BeautifulSoup(conn_data.text, PARSE_MODE)
+        soup = NewsSoup(markup=conn_data.text)
 
         # can't save.
         if not self._save_primary_data(news_data, soup) or not self._save_content(news_data, soup):

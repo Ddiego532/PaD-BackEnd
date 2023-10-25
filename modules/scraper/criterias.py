@@ -90,7 +90,7 @@ TELETRECE_SELECTOR = {
     "content": {"tag": "div", "identifier_attrib": "id", "attrib_value": "article-body-wrapper"},
 
     "common_irrelevant_tags": {
-        "tags": ["div"],
+        "tags": ["a"],
         "classes": ["article-component__read"],
     },
 
@@ -241,6 +241,48 @@ ASCOM_SELECTOR = {
         "tags": ["div", "figcaption"],
         "classes": ["ext ext-embed", "mm__cap"]
     }
+}
+
+ADNCL_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "identifier_attrib": "class",
+            "attrib_value": "the-single__title",
+        },
+
+        "subtitle": {
+            "tag": "div",
+            "identifier_attrib": "class",
+            "attrib_value": "the-single__excerpt"
+        },
+
+        "date": {
+            "tag": "script",
+            "schema_attrib": "datePublished"
+        },
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "the-single-content__body",
+    },
+
+    "common_irrelevant_tags": {
+        "tags": ["div"],
+        "classes": ["ned-ad-dynamic"]
+    },
+}
+
+ADNCL= {
+    "url": "https://www.adnradio.cl/category/politica/",
+    "tag": "div",
+    "identifier_attrib": "class",
+    "attrib_value": "main__container container",
+    "forbidden_paths": ["/category/"],
+    "explore_path": "category/politica/page/page_num/",
+    "news_selector": ADNCL_SELECTOR
 }
 
 TELETRECE = {

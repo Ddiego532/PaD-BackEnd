@@ -1,6 +1,7 @@
 from requests import Session, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
+from scraper_constants import MAX_SPLITS_KEY_VALUES
 import os
 import json
 
@@ -50,57 +51,6 @@ def get_joined_url(url, rel_path):
 def get_decoded_text(content : str):
     return content.encode("utf-8").decode("unicode-escape")
 
-#### BEAUTIFUL SOUP CRITERIA HELPERS #########
-def get_element_by_identifier_attribute(data : dict, soup):
-    id = data.get("identifier_attrib", None)
-
-    if id is None:
-        raise ValueError("Identifier can't be null.")
-    
-    id_value = data.get("attrib_value")
-
-    return soup.find(data["tag"], {id : id_value})
-
-def get_tag(data : dict, soup):
-    # parents can give the way we retrieve the data.
-    parent_data = data.get("parent", None)
-
-    if parent_data is None:
-        return get_element_by_identifier_attribute(data, soup)
-
-    parent_element = get_element_by_identifier_attribute(parent_data, soup)
-
-    # nested ahh thing
-    if parent_element:
-        first = parent_element.find(data["tag"])
-
-        if first is not None:
-            return first
-        
-    # no parent so use fallback.
-    fallback_data = data.get("fallback", None)
-
-    if fallback_data:
-        fallback_tag = get_element_by_identifier_attribute(fallback_data, soup)
-
-        return fallback_tag.find(data["tag"])
-    
-    # worst case.
-    return None
-
-def get_meta_content(property : str, soup):
-    # usually we should format this.
-    tag_prop = f"og:{property}"
-    meta = soup.find("meta", {"property": tag_prop})
-
-    if meta:
-        return meta.get("content")
-
-    return None
-
-def are_elements_in_another_list(source_list : list, target_list: list):
-    return any(elem in target_list for elem in source_list)
-
 #### FILE SAVING HANDLING ######
 def get_filename_by_domain(url : str):
     netloc = urlparse(url).netloc
@@ -118,3 +68,24 @@ def create_json_file(filename : str, data : any):
 
     with open(os.path.join(OUTPUT_PATH, f"{filename}.json"), "w", encoding="utf-8") as json_file:
         json.dump(data, json_file, ensure_ascii=False, indent=4)
+
+# WORKAROUND: This should be called when the json.loads fail!!!!!
+def get_kv_by_string(search : str, string : str):
+    stripped : list = string.splitlines()
+    
+    line : str
+    for line in stripped:
+        if "{" in line: continue
+        if not ":" in line: continue
+
+        mapped = line.split(":", MAX_SPLITS_KEY_VALUES)
+        
+        key = mapped[0]
+        key = key.replace('"', '').strip()
+
+        print(key, search)
+
+        if key == search:
+            return mapped[1]
+        
+    return None

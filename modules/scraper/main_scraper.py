@@ -4,7 +4,7 @@ from criterias import *
 
 EXAMPLE_LEVEL = 1
 LIST_OF_SOURCES = [TELETRECE, ELDINAMO, ELMOSTRADOR, CNNCHILE, TVN_NOTICIAS,
-                BIOBIOCHILE, LATERCERA, MEGANOTICIAS, ASCOM, COOPERATIVA]
+                BIOBIOCHILE, LATERCERA, MEGANOTICIAS, ASCOM, COOPERATIVA, ADNCL]
 
 ref_list = []
 
@@ -17,7 +17,3 @@ for webpage in LIST_OF_SOURCES:
     ref_list.extend(news_saver.get_saved_data())
 
 create_json_file("all_news", ref_list)
-
-#teletrece = HTMLScraper(TELETRECE)
-#teletrece.start_scraping(EXAMPLE_LEVEL)
-#teletrece.news_saver.save_to_json()

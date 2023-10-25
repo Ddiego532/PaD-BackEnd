@@ -1,6 +1,6 @@
-from base_scraper import BaseScraper, BeautifulSoup
-from helpers import is_valid, is_absolute, get_element_by_identifier_attribute
-from scraper_constants import PARSE_MODE
+from base_scraper import BaseScraper
+from news_soup import NewsSoup
+from helpers import is_valid, is_absolute
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):
@@ -42,9 +42,9 @@ class HTMLScraper(BaseScraper):
     def _connect_and_add_sublinks(self, url: str):
         print("Passed URL: ", url)
         conn = self.handle_page_session(url=url)
-        soup = BeautifulSoup(conn.text, PARSE_MODE)
+        soup = NewsSoup(conn.text)
 
-        element = get_element_by_identifier_attribute(self._criteria, soup)
+        element = soup.find_element_by_identifier_attribute(self._criteria)
     
         for link in element.find_all("a"):
             href = link.get("href")
