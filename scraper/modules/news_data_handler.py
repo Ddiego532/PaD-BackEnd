@@ -1,7 +1,6 @@
 from .news_soup import NewsSoup
 from .helpers import is_absolute, get_joined_url, get_tags_from_str
 
-# omg a new class moment
 class NewsDataFinder:
     def __init__(self, soup : NewsSoup, selector : dict):
         self.soup = soup
@@ -30,7 +29,10 @@ class NewsDataFinder:
             text : str = refs.get_text(strip=True)
             if len(text) <= 0 or ("..." in text): continue
             # clean text.
-            cleaned_text = text.replace("|", "").lower().strip()
+            no_seps = text.replace("|", "")
+            no_hashtags = no_seps.replace("#", "")
+            cleaned_text = no_hashtags.lower().strip()
+
             cleaned_tags.append(cleaned_text)
 
         return cleaned_tags
