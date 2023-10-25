@@ -19,7 +19,6 @@ class BaseScraper:
         # try catch goofy aaa thing.
         if self.seed_url is None:
             raise ValueError(f"The seed URL has a null value.")
-        
 
         self.page_session = create_session()
         self.cached_links = set()
