@@ -135,10 +135,18 @@ class NewsSoup(BeautifulSoup):
         return self.get_meta_content("property", f"og:{prop}")
     
     # its a news soup, so it makes sense that this method belongs here.
-    def scrap_keywords(self):
+    def get_keywords(self, keywords_crit : dict):
         # check if exists on meta first.
         meta_content = self.get_meta_content("name", "keywords")
-        return get_tags_from_str(meta_content) if meta_content else None
+
+        # found use it.
+        if meta_content:
+            return get_tags_from_str(meta_content)
+        
+        # content by criteria.
+        if keywords_crit:
+            pass
+
 
         
 
