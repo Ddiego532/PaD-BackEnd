@@ -1,6 +1,6 @@
 from base_scraper import BaseScraper
-from news_soup import NewsSoup
-from helpers import is_valid, is_absolute
+from modules.news_soup import NewsSoup
+from modules.helpers import is_valid, is_absolute
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):

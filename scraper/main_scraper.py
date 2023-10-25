@@ -1,5 +1,5 @@
 from html_scraper import HTMLScraper
-from helpers import create_json_file
+from modules.helpers import create_json_file
 from criterias import *
 
 EXAMPLE_LEVEL = 1

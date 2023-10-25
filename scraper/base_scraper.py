@@ -1,7 +1,7 @@
-from helpers import create_session, handle_session, get_base_url
-from scrapper_data import RobotsParser, NewsSaver
-from bs4 import BeautifulSoup
-from scraper_constants import EMPTY_LIST
+from modules.helpers import create_session, handle_session, get_base_url
+from modules.news_saver import NewsSaver
+from modules.robots_parser import RobotsParser
+from modules.constants import EMPTY_LIST
 
 # PARENT CLASS.
 class BaseScraper:

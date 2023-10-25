@@ -3,8 +3,8 @@ from collections.abc import Sequence
 from bs4 import BeautifulSoup, Tag
 from bs4.builder import TreeBuilder
 from bs4.element import PageElement as PageElement, SoupStrainer as SoupStrainer
-from scraper_constants import PARSE_MODE, GOOD_JSON, MALFORMED_JSON
-from helpers import get_kv_by_string
+from .constants import PARSE_MODE, GOOD_JSON, MALFORMED_JSON
+from .helpers import get_kv_by_string
 import json
 
 class NewsSoup(BeautifulSoup):
@@ -58,7 +58,6 @@ class NewsSoup(BeautifulSoup):
         schema, status = self.get_schema()
 
         if status == MALFORMED_JSON:
-            print(schema)
             return get_kv_by_string(attrib, schema)
 
         return schema.get(attrib, None)

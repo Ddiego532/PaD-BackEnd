@@ -1,7 +1,7 @@
 from requests import Session, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
-from scraper_constants import MAX_SPLITS_KEY_VALUES
+from .constants import MAX_SPLITS_KEY_VALUES
 import os
 import json
 
@@ -59,7 +59,8 @@ def get_filename_by_domain(url : str):
     return netloc.replace(".", "_")
 
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-OUTPUT_PATH = os.path.join(FILE_PATH, "output_data")
+# assuming we are inside of modules.
+OUTPUT_PATH = os.path.join(os.path.dirname(FILE_PATH), "output_data")
 
 def create_json_file(filename : str, data : any):
     # ensure that we are not having any issues.
