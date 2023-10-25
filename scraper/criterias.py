@@ -31,7 +31,7 @@ MEGANOTICIAS_SELECTOR = {
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "contenido-nota"},
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "contenedor-temas"},
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags": ["div", "a"],
         "classes": ["relacionados", "btn-temas evento-TodoSobre"]
     }
@@ -58,7 +58,7 @@ TVN_SELECTOR = {
     },
 
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "CUERPO"},
-    "common_irrelevant_tags": {"tags": ["div"], "classes": ["prontus-card-container"]},
+    "irrelevant_tags": {"tags": ["div"], "classes": ["prontus-card-container"]},
     "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "tags"},
 }
 
@@ -78,7 +78,7 @@ LATERCERA_SELECTOR = {
                   "date": {"tag": "time", "identifier_attrib": "class", "attrib_value": "p-left-10"},
                   "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "excerpt"}},
     "content": {"tag": "div", "identifier_attrib": "class", "attrib_value": "single-content"},
-    "common_irrelevant_tags": {"tags": ["aside", "div"], "classes": ["offer-content", "links | story_links"]},
+    "irrelevant_tags": {"tags": ["aside", "div"], "classes": ["offer-content", "links | story_links"]},
     "news_tags": {"tag": "ul", "identifier_attrib": "class", "attrib_value": "list-cat-y-tags"},
 }
 
@@ -89,7 +89,7 @@ TELETRECE_SELECTOR = {
 
     "content": {"tag": "div", "identifier_attrib": "id", "attrib_value": "article-body-wrapper"},
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags": ["a"],
         "classes": ["article-component__read"],
     },
@@ -118,7 +118,7 @@ BIOBIOCHILE_SELECTOR = {
         "attrib_value": "post-content clearfix",
     },
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         # we used the excerpt at this time so we can delete it easily.
         "tags": ["div", "div"],
         "classes": ["lee-tambien-bbcl", "post-excerpt"]
@@ -146,7 +146,7 @@ COOPERATIVA_SELECTOR = {
         "attrib_value": "cuerpo-ad",
     },
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags" : ["div"],
         "classes": ["modulo-lee"],
     },
@@ -188,7 +188,7 @@ ELDINAMO_SELECTOR = {
         "attrib_value": "the-content",
     },
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags": ["aside"],
         "classes": ["bloque-tc-tres-recomendados"]
     },
@@ -237,7 +237,7 @@ ASCOM_SELECTOR = {
         "attrib_value": "art__tags",
     },
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags": ["div", "figcaption"],
         "classes": ["ext ext-embed", "mm__cap"]
     }
@@ -269,10 +269,50 @@ ADNCL_SELECTOR = {
         "attrib_value": "the-single-content__body",
     },
 
-    "common_irrelevant_tags": {
+    "irrelevant_tags": {
         "tags": ["div"],
         "classes": ["ned-ad-dynamic"]
     },
+}
+
+CHILEVISION_SELECTOR = {
+    "text_data": {
+        "title": {
+            "tag": "h1",
+            "identifier_attrib": "class",
+            "attrib_value": "the-single__title",
+        },
+
+        "subtitle": {
+            "tag": "p",
+            "identifier_attrib": "class",
+            "attrib_value": "the-single__excerpt",
+        },
+
+        "date": {
+            "tag": "time",
+            "identifier_attrib": "class",
+            "attrib_value": "the-single-about__date u-text-capitalize",
+        },
+    },
+
+    "content": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "the-single-section__text the-single-section-text"
+    },
+
+    "irrelevant_tags": {
+        "tags": ["div", "div"],
+        "classes": ["the-recomended-box desktop:margin-bottom-50 desktop:margin-top-50", "the-custom-button"]
+    },
+
+    "news_tags": {
+        "tag": "div",
+        "identifier_attrib": "class",
+        "attrib_value": "the-single-about__item the-single-about__item--tags the-single-tags",
+    }
+
 }
 
 ADNCL= {
@@ -388,4 +428,13 @@ ASCOM = {
     "force_spec_url" : True,
     "forbidden_paths": ["/?omnil=mpal", "/videos/"],
     "news_selector": ASCOM_SELECTOR,
+}
+
+CHILEVISION = {
+    "url": "https://www.chvnoticias.cl/tag/politica/",
+    "tag": "div",
+    "identifier_attrib": "class",
+    "attrib_value": "category-list",
+    "forbidden_paths": ["/reportajes/"],
+    "news_selector": CHILEVISION_SELECTOR
 }

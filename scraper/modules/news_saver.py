@@ -5,7 +5,7 @@ from requests import Response
 from .news_soup import NewsSoup, Tag
 
 def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
-    bad_content : dict = criteria.get("common_irrelevant_tags", None)
+    bad_content : dict = criteria.get("irrelevant_tags", None)
 
     # not removed.
     if bad_content is None:
