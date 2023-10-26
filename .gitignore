@@ -4,3 +4,4 @@ noticias/migrations
 .vscode
 venv
 db.sqlite3
+*.pyc
