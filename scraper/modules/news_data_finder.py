@@ -1,5 +1,5 @@
 from .news_soup import NewsSoup
-from .helpers import is_absolute, get_joined_url, get_tags_from_str
+from .helpers import get_tags_from_str
 
 class NewsDataFinder:
     def __init__(self, soup : NewsSoup, selector : dict):
@@ -7,6 +7,12 @@ class NewsDataFinder:
         self.selector = selector
 
     def find_tags(self):
+        """
+        Encuentra las etiquetas de una noticia.
+
+        :returns:
+            tags : list - Las etiquetas.
+        """
         meta = self.soup.get_meta_content("name", "keywords")
 
         if meta:
@@ -38,7 +44,16 @@ class NewsDataFinder:
 
         return cleaned_tags
 
-    def find_text_data_element(self, elem : str):
+    def find_text_data_element(self, elem : str) -> str:
+        """
+        Encuentra los elementos especificados en el text_data.
+
+        :params:
+            elem : str - Elemento del text_data.
+        
+        :returns:
+            content : str - El contenido del elemento especificado.
+        """
         text_data : dict = self.selector["text_data"]
 
         if not text_data:
@@ -61,7 +76,13 @@ class NewsDataFinder:
 
         return textelem
     
-    def find_representative_image(self, source_url : str):
+    def find_representative_image(self):
+        """
+        Encuentra una imagen representativa de una noticia.
+
+        :returns:
+            source : str - La fuente de la imagen en formato relativo o absoluto.
+        """
         source = self.soup.get_meta_og_content("image")
 
         # not on meta, so use the tags.
@@ -74,10 +95,6 @@ class NewsDataFinder:
         
             # get source.
             source = image.get(image_data.get("forced_src", "src"))
-            
-            # get the absolute path.
-            if not is_absolute(source):
-                source = get_joined_url(source_url, source)
 
         return source
     

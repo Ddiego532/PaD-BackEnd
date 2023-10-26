@@ -124,7 +124,7 @@ class NewsSoup(BeautifulSoup):
 
             Es necesario especificar el "tag" ya que de lo contrario podría arrojar errores.
 
-            Si el tag especificado es un script, entonces se tendrá que especificar un atributo asociado al esquema de la página.
+            Si el tag especificado es un script, entonces se tendrá que especificar un atributo asociado al esquema de la página (schema_attrib).
 
             Si lo que se busca es un padre, solamente hay que especificar el tag.
 

@@ -7,12 +7,28 @@ BAD_HREFS = {"#", "_blank", "javascript:void(0)"}
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):
+    """
+    Scrapea contenido de los HTML.
+    """
     def __init__(self, criteria: dict) -> None:
+        """
+        Usa los mismos criterios que el padre, pero ahora necesita el tag especifico.
+
+        Criterios para el diccionario: 
+            tag : str - La etiqueta especifica en donde se obtienen los enlaces.
+            identifier_attrib : str -  El atributo que identifica a esa etiqueta.
+            attrib_value : str - El valor del atributo identificador.
+            force_spec_url: bool - Forzar al URL principal a ser scrapeado.
+            explore_paths : str | None - Las ruta que contiene la páginación. Se especifica el page_num.
+        """
         super().__init__(criteria)
 
         self.target_tag = criteria.get("tag", None)
 
     def _get_from_url(self):
+        """
+        Obtiene los enlaces del URL especificado, solamente si la páginación es muy especifica.
+        """
         if not self._criteria.get("force_spec_url", False):
             return
         

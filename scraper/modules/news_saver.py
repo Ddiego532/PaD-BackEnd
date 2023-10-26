@@ -1,11 +1,27 @@
-# TODO: Acortar esto.
-from .helpers import get_filename_by_domain, create_json_file
+from .helpers import get_filename_by_domain, create_json_file, is_absolute, get_joined_url
 from requests import Response
 from .news_data_finder import NewsDataFinder
 # only for fixing helpers args.
 from .news_soup import NewsSoup, Tag
 
 def remove_multiple_irrelevant_data(tag_element : Tag, criteria : dict):
+    """
+    Elimina contenido irrelevante de una noticia.
+
+    :params:
+        tag_element : Tag - La etiqueta padre que contiene los contenidos.
+        criteria : dict - El criterio de eliminación (irrelevant_tags).
+
+        El criterio de eliminación está compuesto por:
+            "tags": list - Las etiquetas que van a ser eliminadas.
+
+            "classes": list - Las clases de las etiquetas.
+        
+        Las listas de classes y tags deben ser del mismo tamaño, si no se borrará nada.
+        
+    :returns:
+        was_removed : bool - Las etiquetas fueron borradas.
+    """
     bad_content : dict = criteria.get("irrelevant_tags", None)
 
     # not removed.
@@ -94,9 +110,13 @@ class NewsSaver:
             finder : NewsDataFinder - El objeto buscador de datos de una noticia.
         """
         # check if exists on meta first.
-        image = finder.find_representative_image(self.source_url)
+        image = finder.find_representative_image()
 
         if image:
+            # get the absolute path.
+            if not is_absolute(image):
+                image = get_joined_url(self.source_url, image)
+    
             data["image"] = image
 
     def __extract_content(self, soup : NewsSoup):
