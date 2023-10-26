@@ -15,7 +15,8 @@ class NewsDataFinder:
         # use the tags criteria.
         tags = self.selector.get("news_tags")
     
-        if not tags: 
+        if not tags:
+            print("This page doesn't have any tags.")
             return
 
         tag_element = self.soup.find_tag_by_criteria(tags)
