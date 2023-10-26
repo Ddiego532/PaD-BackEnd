@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, Tag
 from bs4.builder import TreeBuilder
 from bs4.element import PageElement as PageElement, SoupStrainer as SoupStrainer
 from .constants import PARSE_MODE, GOOD_JSON, MALFORMED_JSON
-from .helpers import get_kv_by_string, get_tags_from_str
+from .helpers import get_kv_by_string
 import json
 
 class NewsSoup(BeautifulSoup):
@@ -13,7 +13,9 @@ class NewsSoup(BeautifulSoup):
 
     como obtener los esquemas JSON y encontrar elementos por criterios.
     """
-    def __init__(self, markup: str | bytes = "", builder: TreeBuilder | type[TreeBuilder] | None = None, parse_only: SoupStrainer | None = None, from_encoding: str | None = None, exclude_encodings: Sequence[str] | None = None, element_classes: dict[type[PageElement], type] | None = None, **kwargs) -> None:
+    def __init__(self, markup: str | bytes = "", builder: TreeBuilder | type[TreeBuilder] | None = None, 
+                parse_only: SoupStrainer | None = None, from_encoding: str | None = None, exclude_encodings: Sequence[str] | None = None, 
+                element_classes: dict[type[PageElement], type] | None = None, **kwargs) -> None:
         """
         Constructor del parseador de noticias.
 
@@ -87,38 +89,30 @@ class NewsSoup(BeautifulSoup):
         return self.find(data["tag"], {id : id_value})
 
     # TODO: Document it.
+    def __find_tag_by_parent(self, data : dict):
+        parent_data = data.get("parent", None)
+        found_elem = None
+    
+        if parent_data:
+            parent_elem = self.find_element_by_identifier_attribute(parent_data)
+            found_elem = parent_elem and parent_elem.find(data["tag"])
+
+        return found_elem
+
     def find_tag_by_criteria(self, data : dict):
         curr_tag : str = data["tag"]
 
         if curr_tag == "script":
             return self.get_schema_attribute(data["schema_attrib"])
-
-        # parents can give the way we retrieve the data.
-        parent_data = data.get("parent", None)
-
-        if parent_data is None:
-            return self.find_element_by_identifier_attribute(data)
-
-        parent_element = self.find_element_by_identifier_attribute(parent_data)
-
-        # nested ahh thing
-        if parent_element:
-            first = parent_element.find(curr_tag)
-
-            if first is not None:
-                return first
-            
-        # no parent so use fallback.
-        fallback_data : dict = data.get("fallback", None)
-
-        if fallback_data:
-            fallback_tag = self.find_element_by_identifier_attribute(fallback_data)
-
-            return fallback_tag.find(curr_tag)
         
-        # worst case.
-        return None
-    
+        parent_elem = self.__find_tag_by_parent(data)
+
+        # no parent so use directly the attribute.
+        if parent_elem is None:
+            return self.find_element_by_identifier_attribute(data)
+        
+        return parent_elem
+
     def get_meta_content(self, key : str, val : str) -> list[PageElement] | None:
         meta = self.find("meta", {key : val})
         return meta.get("content") if meta else None

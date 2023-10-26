@@ -1,7 +1,7 @@
 # TODO: Acortar esto.
 from .helpers import is_absolute, get_joined_url, get_filename_by_domain, create_json_file
 from requests import Response
-from .news_data_handler import NewsDataFinder
+from .news_data_finder import NewsDataFinder
 # only for fixing helpers args.
 from .news_soup import NewsSoup, Tag
 

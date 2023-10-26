@@ -32,8 +32,8 @@ MEGANOTICIAS_SELECTOR = {
     "news_tags": {"tag": "div", "identifier_attrib": "class", "attrib_value": "contenedor-temas"},
 
     "irrelevant_tags": {
-        "tags": ["div", "a"],
-        "classes": ["relacionados", "btn-temas evento-TodoSobre"]
+        "tags": ["div", "a", "a"],
+        "classes": ["relacionados", "btn-temas evento-TodoSobre", "btn-siguienteNota"]
     }
 }
 
