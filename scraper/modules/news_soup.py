@@ -26,7 +26,7 @@ class NewsSoup(BeautifulSoup):
         super().__init__(markup=markup, features=PARSE_MODE, builder=builder, parse_only=parse_only,
                         from_encoding=from_encoding, exclude_encodings=exclude_encodings, element_classes=element_classes, **kwargs)
 
-    def get_schema(self):
+    def get_schema(self) -> tuple[dict | str, int]:
         """
         Obtiene el schema utilizado por los motores de búsqueda en formato JSON o texto.
 
@@ -47,7 +47,7 @@ class NewsSoup(BeautifulSoup):
                 print(f"Can't decode JSON because its malformed. Returning in string value.\nReason: {e}")
 
         return text, MALFORMED_JSON
-    def get_schema_attribute(self, attrib : str):
+    def get_schema_attribute(self, attrib : str) -> str:
         """
         Obtiene un atributo del esquema de la pagina.
 
@@ -64,7 +64,7 @@ class NewsSoup(BeautifulSoup):
 
         return schema.get(attrib, None)
     
-    def find_element_by_identifier_attribute(self, data : dict):
+    def find_element_by_identifier_attribute(self, data : dict) -> Tag:
         """
         Busca elementos en la pagina con el atributo que lo identifica, pueden ser ids, clases, entre otros.
 
@@ -88,8 +88,16 @@ class NewsSoup(BeautifulSoup):
         id_value = data.get("attrib_value")
         return self.find(data["tag"], {id : id_value})
 
-    # TODO: Document it.
-    def __find_tag_by_parent(self, data : dict):
+    def __find_tag_by_parent(self, data : dict) -> Tag:
+        """
+        Obtiene un tag usando los datos de su padre.
+
+        :params:
+            data : dict - El diccionario que contiene los datos del padre y el tag del hijo.
+
+        :returns:
+            found_elem : Tag | NavigableString | None - El nodo que contiene al elemento buscado.
+        """
         parent_data = data.get("parent", None)
         found_elem = None
     
@@ -99,7 +107,24 @@ class NewsSoup(BeautifulSoup):
 
         return found_elem
 
-    def find_tag_by_criteria(self, data : dict):
+    def find_tag_by_criteria(self, data : dict) -> Tag:
+        """
+        Busca un nodo en la página con un criterio especifico.
+
+        Ya sea por una etiqueta especial o por el padre.
+
+        :params:
+            data : dict - El diccionario que contiene el criterio.
+
+            Es necesario especificar el "tag" ya que de lo contrario podría arrojar errores.
+
+            Si el tag especificado es un script, entonces se tendrá que especificar un atributo asociado al esquema de la página.
+
+            Si lo que se busca es un padre, solamente hay que especificar el tag.
+
+        :returns:
+            html_tag : Tag - La etiqueta solicitada.
+        """
         curr_tag : str = data["tag"]
 
         if curr_tag == "script":
@@ -113,7 +138,17 @@ class NewsSoup(BeautifulSoup):
         
         return parent_elem
 
-    def get_meta_content(self, key : str, val : str) -> list[PageElement] | None:
+    def get_meta_content(self, key : str, val : str) -> str | list[str] | None:
+        """
+        Obtiene el contenido de una etiqueta <meta> a través de su llave-valor.
+
+        :params:
+            key : str - La llave a buscar.
+            val : str - El valor que contiene esa llave.
+
+        :returns:
+            content : str | list[str] - Los contenidos.
+        """
         meta = self.find("meta", {key : val})
         return meta.get("content") if meta else None
 
@@ -127,10 +162,3 @@ class NewsSoup(BeautifulSoup):
             content : str | None - El contenido de la etiqueta meta seleccionada.
         """
         return self.get_meta_content("property", f"og:{prop}")
-
-
-        
-
-        
-
-    
