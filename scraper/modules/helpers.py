@@ -1,13 +1,15 @@
 from requests import Session, exceptions
 from urllib.parse import urlparse, urljoin
 from time import sleep
-from .constants import MAX_SPLITS_KEY_VALUES
 import os
 import json
 
 # define constants.
 # GET AND POST SUCCESS CODES.
 SUCCESS_CODES = [200, 201]
+
+# num of splits to do a key-value pair.
+MAX_SPLITS_KEY_VALUES = 1
 
 def create_session():
     return Session()

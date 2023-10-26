@@ -3,9 +3,15 @@ from collections.abc import Sequence
 from bs4 import BeautifulSoup, Tag
 from bs4.builder import TreeBuilder
 from bs4.element import PageElement as PageElement, SoupStrainer as SoupStrainer
-from .constants import PARSE_MODE, GOOD_JSON, MALFORMED_JSON
 from .helpers import get_kv_by_string
 import json
+
+# JSON handling for schemas.
+MALFORMED_JSON = -1
+GOOD_JSON = 1
+
+# parsing mode for news.
+PARSE_MODE = "lxml"
 
 class NewsSoup(BeautifulSoup):
     """

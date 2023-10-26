@@ -1,7 +1,9 @@
 from base_scraper import BaseScraper
 from modules.news_soup import NewsSoup
 from modules.helpers import is_valid, is_absolute
-from modules.constants import BAD_HREFS
+
+# hrefs we don't care.
+BAD_HREFS = {"#", "_blank", "javascript:void(0)"}
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):

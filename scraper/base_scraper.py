@@ -1,7 +1,6 @@
 from modules.helpers import create_session, handle_session, get_base_url
 from modules.news_saver import NewsSaver
 from modules.robots_parser import RobotsParser
-from modules.constants import EMPTY_LIST
 
 # PARENT CLASS.
 class BaseScraper:
@@ -31,7 +30,7 @@ class BaseScraper:
         self.conn_delay = delay
     
     def is_forbidden_sublink(self, link : str):
-        forbidden_paths = self._criteria.get("forbidden_paths", EMPTY_LIST)
+        forbidden_paths = self._criteria.get("forbidden_paths", [])
     
         return any(path in link for path in forbidden_paths)
     
