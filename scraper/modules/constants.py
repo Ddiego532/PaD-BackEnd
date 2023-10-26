@@ -10,3 +10,6 @@ MAX_SPLITS_KEY_VALUES = 1
 # JSON handling for schemas.
 MALFORMED_JSON = -1
 GOOD_JSON = 1
+
+# hrefs we don't care.
+BAD_HREFS = {"#", "_blank", "javascript:void(0)"}

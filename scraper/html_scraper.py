@@ -1,6 +1,7 @@
 from base_scraper import BaseScraper
 from modules.news_soup import NewsSoup
 from modules.helpers import is_valid, is_absolute
+from modules.constants import BAD_HREFS
 
 # is there something more we can do?
 class HTMLScraper(BaseScraper):
@@ -29,7 +30,6 @@ class HTMLScraper(BaseScraper):
         # below 1 bad!!!
         max_level = max(max_level, 1)
 
-        # print(self.seed_url, explore_path)
         fullpath = f"{self.seed_url}/{explore_path}"
 
         for i in range(1, max_level + 1):
@@ -49,7 +49,8 @@ class HTMLScraper(BaseScraper):
         for link in element.find_all("a"):
             href = link.get("href")
 
-            if (href is None) or self.is_forbidden_sublink(href): 
+            if (href is None) or (href in BAD_HREFS) or self.is_forbidden_sublink(href):
+                print("Bad or forbidden href: ", href)
                 continue
 
             if not is_absolute(href):
@@ -57,6 +58,9 @@ class HTMLScraper(BaseScraper):
             
             # doesn't match with the seed url.
             if not is_valid(href, self.seed_url): 
+                print("Link is not valid, href: ", href)
                 continue
+
+            print("Sublink: ", href)
 
             self.cached_links.add(href)
