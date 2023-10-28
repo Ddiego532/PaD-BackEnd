@@ -1,0 +1,7 @@
+Este es un ejemplo de archivo pages.txt.
+Contiene varias líneas de texto.
+Cada línea tiene palabras con letras minúsculas y números.
+Algunas palabras son válidas, como "ejemplo123", y otras no, como "Ejemplo-ABC".
+También puede haber palabras como "texto!" que no son válidas debido a caracteres especiales.
+Espero que este ejemplo te ayude a probar el código.
+5435345435
