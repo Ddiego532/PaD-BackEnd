@@ -4,7 +4,8 @@ import os
 import json 
 
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-SCRAPPED_NEWS_PATH = os.path.join(os.path.dirname(FILE_PATH), "scraper", "output_data", "all_news.json")
+FILENAME = "all_news.json"
+SCRAPPED_NEWS_PATH = os.path.join(os.path.dirname(FILE_PATH), "scraper", "output_data", FILENAME)
 
 app = FastAPI()
 
