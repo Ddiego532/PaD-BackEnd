@@ -88,8 +88,8 @@ class NewsSoup(BeautifulSoup):
         """
         id = data.get("identifier_attrib", None)
 
-        if id is None:
-            raise ValueError("Identifier can't be null.")
+        #if id is None:
+            #raise ValueError("Identifier can't be null.")
         
         id_value = data.get("attrib_value")
         return self.find(data["tag"], {id : id_value})
