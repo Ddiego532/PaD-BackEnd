@@ -1,6 +1,5 @@
 # To do:
 # TF-iDF para solo una palabra.
-# Evitar que no se caiga al ingresar una palabra incorrecta.
 
 import math
 
@@ -64,20 +63,28 @@ class InvertedList:
         return str_to_print
     
     def find(self, word):
-        return self.index[word] if self.index.get(word) is not None else ""
+        try:
+            return self.index[word] 
+        except KeyError:
+            print(f"The word '{word}' does not exist in the index.")
+            return PostingList()        # Retorna lista vacia.
     
     def query_or(self, intersection_list: PostingList, word: str):
-        if intersection_list is not None:
-            if self.index.get(word) is not None:
-                return self.intersection(intersection_list, self.index[word])
+        try:
+            if intersection_list is not None:
+                if self.index.get(word) is not None:
+                    return self.intersection(intersection_list, self.index[word])
+                else:
+                    return intersection_list
             else:
-                return intersection_list
-        else:
-            if self.index.get(word) is not None:
-                return self.index[word]
-            else:
-                return None
-
+                if self.index.get(word) is not None:
+                    return self.index[word]
+                else:
+                    return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+        
     def calculate_tfidf(self, freq1, freq2, N1, N2, dfreq1, dfreq2, Ndocs):
 
         if N1 == 0 or dfreq1 == 0 or N2 == 0 or dfreq2 == 0:

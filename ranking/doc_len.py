@@ -1,3 +1,5 @@
+# Genera 'doclen.txt' en la carpeta 'data', esta es usada en answer_server.py
+
 import os
 import re
 
