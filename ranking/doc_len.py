@@ -10,16 +10,14 @@ def check_word(palabra):
         return ""
 
 def main():
-    path = r"../indexacion/reduced/all_content_reduced.txt"
+    path = r"../indexacion/data/all_content.txt"
     output_path = r"data/doclen.txt"
 
-    with open(path, "r") as archivo:
-        with open(output_path, "w") as output_file:
+    with open(path, "r",encoding='utf-8') as archivo:
+        with open(output_path, "w",encoding='utf-8') as output_file:
             for num_linea, linea in enumerate(archivo, start=1):
                 palabras = linea.lower().split()
                 document_len = sum(1 for palabra in palabras if len(check_word(palabra)) > 0)
-                
-                # Escribir la longitud de la línea en el archivo "doclen.txt"
                 output_file.write(f"{document_len}\n")
 
 if __name__ == "__main__":
