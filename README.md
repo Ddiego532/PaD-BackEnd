@@ -1,6 +1,14 @@
 # PaD-BackEnd
 BackEnd del sistema de recuperacion de informacion Politica al Dia
 
+## Urls
+```/all_news/```
+```/get_by_polarity/{polarity}```
+
+Siendo Positivo, Neutro y Negativo las 3 posibles polaridades.
+
+Vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para obtener los resultados de la api.
+
 ## Para el desarrollo del proyecto
 Para la realizacion del proyecto estaremos desarrollando una api rest con FastApi. 
 
@@ -45,10 +53,5 @@ Para correr el proyecto es necesario introducir lo siguiente en la terminal de c
 uvicorn api.main_api:app
 ```
 Se le comunicara por la misma terminal la direccion local para ingresar.
-
-## Urls
-```/all_news/```
-
-URLs, por lo que una vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para obtener los resultados de la api.
 
 
