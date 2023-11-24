@@ -34,29 +34,35 @@ class InvertedList:
         self.doclen = list()
 
     def load_index(self, path: str):
-        # Se elimino el encode utf-16.
-        with open (path, 'r') as f:
-            line = f.readline()
-            while line:
-                current_post = PostingList()
-                if(len(line) > 2):
-                    elems = line.split()
-                    word = elems [0]
-                    count_docs = elems [1]
-                    print (f"Loading word {word} in {count_docs} documents.")
-                    pares = list(zip(elems[2::2], elems[3::2])) 
-                    for par in pares:       
-                        current_post.add_doc(par[0],par[1])
-                    self.index[word] = current_post
+        try:
+            with open(path, 'r') as f:
                 line = f.readline()
+                while line:
+                    current_post = PostingList()
+                    if len(line) > 2:
+                        elems = line.split()
+                        word = elems[0]
+                        count_docs = elems[1]
+                        print(f"Loading word {word} in {count_docs} documents.")
+                        pares = list(zip(elems[2::2], elems[3::2]))
+                        for par in pares:
+                            current_post.add_doc(par[0], par[1])
+                        self.index[word] = current_post
+                    line = f.readline()
+        except Exception as e:
+            print(f"Error al leer el archivo {path}: {e}")
+
 
     def load_doclen(self, path: str):
-        with open(path, 'r') as f:
-            line = f.readline()
-            while line:
-                self.doclen.append(int(line))
+        try:
+            with open(path, 'r') as f:
                 line = f.readline()
-            print(self.doclen)
+                while line:
+                    self.doclen.append(int(line))
+                    line = f.readline()
+                print(self.doclen)
+        except Exception as e:
+            print(f"Error al leer el archivo {path}: {e}")
 
     def __str__(self):
         str_to_print = "\n".join(f"{key} {value}" for key, value in self.index.items())
