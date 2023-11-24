@@ -86,10 +86,10 @@ class InvertedList:
                 if self.index.get(word) is not None:
                     return self.index[word]
                 else:
-                    return None
+                    return PostingList()
         except Exception as e:
             print(f"An error occurred: {e}")
-            return None
+            return PostingList()
         
     def calculate_tfidf(self, freq1, freq2, N1, N2, dfreq1, dfreq2, Ndocs):
         if N1 == 0 or dfreq1 == 0:
