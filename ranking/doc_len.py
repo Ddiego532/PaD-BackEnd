@@ -10,8 +10,8 @@ def check_word(palabra):
         return ""
 
 def main():
-    path = r"../indexacion/data/all_content.txt"
-    output_path = r"data/doclen.txt"
+    path = r"indexacion/data/all_content.txt"
+    output_path = r"ranking/data/doclen.txt"
 
     with open(path, "r",encoding='utf-8') as archivo:
         with open(output_path, "w",encoding='utf-8') as output_file:
