@@ -1,5 +1,5 @@
 # To do:
-# TF-iDF para solo una palabra.
+# TF-iDF para solo una palabra (?).
 
 import math
 
@@ -86,12 +86,17 @@ class InvertedList:
             return None
         
     def calculate_tfidf(self, freq1, freq2, N1, N2, dfreq1, dfreq2, Ndocs):
+        if N1 == 0 or dfreq1 == 0:
+            tfidf1 = 0.0
+        else:
+            tfidf1 = self.calculate_tfidf_single(freq1, N1, dfreq1, Ndocs)
 
-        if N1 == 0 or dfreq1 == 0 or N2 == 0 or dfreq2 == 0:
-            return 0.0
-        tfidf1 = (freq1 / N1)*(math.log(Ndocs / dfreq1)) 
-        tfidf2 = (freq2 / N2)*(math.log(Ndocs / dfreq2))
-        return tfidf1 + tfidf2 
+        if N2 == 0 or dfreq2 == 0:
+            tfidf2 = 0.0
+        else:
+            tfidf2 = self.calculate_tfidf_single(freq2, N2, dfreq2, Ndocs)
+
+        return tfidf1 + tfidf2
 
     def intersection(self, list1: PostingList, list2: PostingList):
         keys1 = list(list1.get_keys())
@@ -125,3 +130,10 @@ class InvertedList:
             current_post.add_doc(doc, freq)
             
         return current_post
+    
+
+    def calculate_tfidf_single(self, freq, N, dfreq, Ndocs):
+        if N == 0 or dfreq == 0:
+            return 0.0
+        tfidf = (freq / N) * (math.log(Ndocs / dfreq))
+        return tfidf
