@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 import os
 import json 
@@ -32,3 +32,12 @@ async def all_news():
             return json.load(json_file)
     except IOError:
         return {"error": "all_news.json file not found!"}
+
+@app.get("/get_by_polarity/{polarity}")
+async def get_by_polarity(polarity: str):
+    with open(SCRAPPED_NEWS_PATH, "+r", encoding="utf-8") as json_file:
+        noticias = json.load(json_file)
+    results = [item for item in noticias if item["polarity"] == polarity]
+    if not results:
+        raise HTTPException(status_code=404, detail="No se encontraron elementos con esa polaridad")
+    return results
