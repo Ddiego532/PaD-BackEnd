@@ -5,7 +5,7 @@ index = InvertedList()
 
 def load_index():
     all_content= r"indexacion/reduced/all_content_reduced.txt"
-    doc_len = r"data/doclen.txt"
+    doc_len = r"ranking/data/doclen.txt"
     index.load_index(all_content)
     index.load_doclen(doc_len)
     print("Index load [OK]")

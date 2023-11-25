@@ -23,7 +23,7 @@ def main():
                     # Escribir la longitud de la línea en el archivo "doclen.txt"
                     output_file.write(f"{document_len}\n")
 
-        print("Archivo 'doclen.txt' creado")
+        print("Archivo 'doclen.txt' creado con exito")
 
     except Exception as e:
             print(f"An error occurred: {e}")

@@ -92,16 +92,15 @@ class InvertedList:
             return PostingList()
         
     def calculate_tfidf(self, freq1, freq2, N1, N2, dfreq1, dfreq2, Ndocs):
+        
         if N1 == 0 or dfreq1 == 0:
             tfidf1 = 0.0
         else:
             tfidf1 = self.calculate_tfidf_single(freq1, N1, dfreq1, Ndocs)
-
         if N2 == 0 or dfreq2 == 0:
             tfidf2 = 0.0
         else:
             tfidf2 = self.calculate_tfidf_single(freq2, N2, dfreq2, Ndocs)
-
         return tfidf1 + tfidf2
 
     def intersection(self, list1: PostingList, list2: PostingList):
