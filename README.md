@@ -22,4 +22,6 @@ Se le comunicara por la misma terminal la direccion local para ingresar.
 
 Siendo Positivo, Neutro y Negativo las 3 posibles polaridades.
 
+Para la query, se debe ingresar el string de busqueda entre los corchetes. 
+
 Vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para obtener los resultados de la api.
