@@ -1,3 +1,5 @@
+# Debe existir el archivo 'doclen.txt' preevio a su ejecucion.
+
 from inverted_list import InvertedList
 import socket
 
