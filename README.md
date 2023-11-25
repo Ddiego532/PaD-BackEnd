@@ -7,6 +7,8 @@ Desde la carpeta correr:
 
 ```
 python api/main_api.py
+```
+```
 python ranking/answer_server.py
 ```
 
