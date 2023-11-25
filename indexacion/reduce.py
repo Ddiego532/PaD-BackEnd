@@ -20,7 +20,7 @@ def main():
 
         indice_invertido[palabra][numero_linea] += 1
 
-    reduced_path = r"reduced/all_content_reduced.txt"   #Ruta de guardado.
+    reduced_path = r"indexacion/reduced/all_content_reduced.txt"   #Ruta de guardado.
     with open(reduced_path, 'w', encoding='utf-8') as f:
         for palabra in sorted(indice_invertido.keys()):
             lineas = indice_invertido[palabra]

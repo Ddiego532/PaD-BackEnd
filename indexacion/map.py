@@ -14,7 +14,7 @@ def validar_palabra(palabra):
         return ""
 
 def main():
-    txt_path = r"data/all_content.txt"  # Ruta de lectura.
+    txt_path = r"indexacion/data/all_content.txt"  # Ruta de lectura.
     with open(txt_path, "r", encoding="utf-8") as archivo:
         for num_linea, linea in enumerate(archivo, start=1):
             palabras = linea.lower().split()
