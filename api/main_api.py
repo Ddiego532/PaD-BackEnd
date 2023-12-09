@@ -66,14 +66,13 @@ def execute_query(query):
     data_str = client_program(query)
     data = ast.literal_eval(data_str)
     news_dict = get_news_dict()
-    print(f"Data received from server: {data}")
+    #print(f"Data received from server: {data}")
 
     response_data = []  # Initialize response_data before the loop
 
     for tuple_item in data:
         key = str(tuple_item[0])
-        print(f"Checking key: {key}")
-
+        # print(f"Checking key: {key}")
         # Convert key to integer
         try:
             key = int(key)
@@ -83,7 +82,7 @@ def execute_query(query):
 
         if key in news_dict:
             matched_news = news_dict[key]
-            print(f"Match found for key {key}. Matched News: {matched_news}")
+            #print(f"Match found for key {key}. Matched News: {matched_news}")
 
             response_data.append({
                 "query": f"Query lista: {query}",
