@@ -19,6 +19,10 @@ def make_query(query):
         intersection_list = index.query_or(intersection_list, word)
 
     sorted_index = intersection_list.get_full_index_sorted()
+
+=======
+
+
     return str(sorted_index)
 
 def server_program():
@@ -45,6 +49,10 @@ def server_program():
         conn.send(str(data).encode())
 
     conn.close()
+
+
+=======
+
 
 if __name__ == '__main__':
     load_index()

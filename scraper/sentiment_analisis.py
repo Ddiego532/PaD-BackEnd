@@ -1,17 +1,11 @@
-from html_scraper import HTMLScraper
-from modules.helpers import create_json_file
-from criterias import *
 import json
 from translate import Translator
 from textblob import TextBlob
+import os
 
-EXAMPLE_LEVEL = 1
-LIST_OF_SOURCES = [TELETRECE, ELDINAMO, ELMOSTRADOR, CNNCHILE, TVN_NOTICIAS,
-                BIOBIOCHILE, LATERCERA, MEGANOTICIAS, ASCOM, COOPERATIVA, ADNCL, CHILEVISION]
-
-print(len(LIST_OF_SOURCES))
-
-ref_list = []
+FILE_PATH = os.path.dirname(os.path.realpath(__file__))
+FILENAME = "all_news.json"
+SCRAPPED_NEWS_PATH = os.path.join(os.path.dirname(FILE_PATH), "scraper", "output_data", FILENAME)
 
 def analizar_polaridad(texto):
     # Crea un objeto Translator
@@ -29,18 +23,14 @@ def analizar_polaridad(texto):
         return "Neutro"
     else:
         return "Positivo"
+    
+with open(SCRAPPED_NEWS_PATH, "+r", encoding="utf-8") as json_file:
+    noticias = json.load(json_file)
 
-for webpage in LIST_OF_SOURCES:
-    scrapper_obj = HTMLScraper(webpage)
-    scrapper_obj.start_scraping()
-
-    news_saver = scrapper_obj.get_news_saver()
-
-    ref_list.extend(news_saver.get_saved_data())
-
-for elemento in ref_list:
+for elemento in noticias:
     titulo = elemento["title"]
     polaridad = analizar_polaridad(titulo)
     elemento["polarity"] = polaridad
 
-create_json_file("all_news", ref_list)
+with open(SCRAPPED_NEWS_PATH, 'w', encoding='utf-8') as file:
+    json.dump(noticias, file, indent=2, ensure_ascii=False)
