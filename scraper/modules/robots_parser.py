@@ -32,8 +32,7 @@ class RobotsParser:
 
         for data in stripped_newlines:
             # no need to iterate.
-            if len(data) <= 0 or data.startswith("#"): continue
-
+            if len(data) <= 1 or data.startswith("#"): continue
             # split one only.
             mapped = data.split(":", 1)
 

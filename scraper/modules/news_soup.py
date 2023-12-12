@@ -42,6 +42,8 @@ class NewsSoup(BeautifulSoup):
         """
         json_app = self.find("script", {"type": "application/ld+json"})
         data : dict = None
+        
+        text = ""
 
         if json_app:
             text = json_app.text
@@ -64,6 +66,9 @@ class NewsSoup(BeautifulSoup):
             atributo : str | None - El valor del atributo.
         """
         schema, status = self.get_schema()
+        
+        if isinstance(schema, list):
+            schema = schema[0]
 
         if status == MALFORMED_JSON:
             return get_kv_by_string(attrib, schema)
@@ -168,3 +173,14 @@ class NewsSoup(BeautifulSoup):
             content : str | None - El contenido de la etiqueta meta seleccionada.
         """
         return self.get_meta_content("property", f"og:{prop}")
+    
+    def get_meta_article_content(self, prop : str):
+        """
+        Busca en las etiquetas meta que posean una propiedad de tipo "article".
+
+        :params:
+            property : str - La propiedad a buscar.
+        returns:
+            content : str | None - El contenido de la etiqueta meta seleccionada.
+        """
+        return self.get_meta_content("property", f"article:{prop}")
