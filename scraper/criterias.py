@@ -314,12 +314,16 @@ CHILEVISION_SELECTOR = {
 }
 
 ADNCL= {
-    "url": "https://www.adnradio.cl/category/politica/",
+    "url": "https://www.adnradio.cl/noticias/politica/",
+    # "category/politica/",
     "tag": "div",
     "identifier_attrib": "class",
     "attrib_value": "main__container container",
-    "forbidden_paths": ["/category/"],
-    "explore_path": "category/politica/page/page_num/",
+    "skipeable_info": {
+        "tag": "nav",
+        "class": "b-n-1"
+    },
+    "forbidden_paths": ["/audio/", "/autor/"],
     "news_selector": ADNCL_SELECTOR
 }
 

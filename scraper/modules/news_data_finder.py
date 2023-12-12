@@ -43,6 +43,17 @@ class NewsDataFinder:
             cleaned_tags.append(cleaned_text)
 
         return cleaned_tags
+    
+    def __get_text_data_element(self, elem : str) -> dict | None:
+        text_data : dict = self.selector["text_data"]
+
+        if not text_data:
+            raise ValueError("text_data tag attributes can't be None.")
+        
+        value = text_data.get(elem, None)
+        
+        return value
+
 
     def find_text_data_element(self, elem : str) -> str:
         """
@@ -54,12 +65,15 @@ class NewsDataFinder:
         :returns:
             content : str - El contenido del elemento especificado.
         """
+        
+        value = self.__get_text_data_element(elem)
+        """
         text_data : dict = self.selector["text_data"]
 
         if not text_data:
             raise ValueError("text_data tag attributes can't be None.")
         
-        value = text_data.get(elem, None)
+        value = text_data.get(elem, None)"""
 
         # not found so bye bye.
         if not value:
@@ -105,8 +119,19 @@ class NewsDataFinder:
         return self.find_text_data_element("subtitle")
     
     # habrá que modificar esta funcion por los requisitos.
+    # esta funcion tiene un trato diferente ya que usaremos funciones para poder un buen parseo.
     def find_date(self):
-        pass
+        meta_content = self.soup.get_meta_article_content("published_time")
+        
+    
+        # chv, cooperativa, meganoticias, elmostrador, t13 lo tienen via script/json.
+        script_content = self.soup.get_schema_attribute("datePublished")
+        
+        # si no nada, hacemos parseo custom.
+        date_stuff = self.__get_text_data_element("date")
+        
+        # AÑADIR EL PARSER CUSTOM.
+        # pass
         # return self.find_text_data_element("date")
 
 

@@ -57,10 +57,22 @@ class HTMLScraper(BaseScraper):
 
         return super().get_links_by_exploring(max_level)
     
+    def __remove_skipeable_html(self, soup : NewsSoup):
+        skipeable_data = self._criteria.get("skipeable_info", None)
+        if not skipeable_data:
+            return
+        
+        skipeable_tag = soup.find(skipeable_data["tag"], {"class": skipeable_data["class"]})
+        
+        if skipeable_tag:
+            skipeable_tag.decompose()
+    
     def _connect_and_add_sublinks(self, url: str):
         print("Passed URL: ", url)
         conn = self.handle_page_session(url=url)
         soup = NewsSoup(conn.text)
+        
+        self.__remove_skipeable_html(soup)
 
         element = soup.find_element_by_identifier_attribute(self._criteria)
     
