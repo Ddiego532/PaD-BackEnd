@@ -20,9 +20,6 @@ def make_query(query):
 
     sorted_index = intersection_list.get_full_index_sorted()
 
-=======
-
-
     return str(sorted_index)
 
 def server_program():
@@ -50,8 +47,6 @@ def server_program():
 
     conn.close()
 
-
-=======
 
 
 if __name__ == '__main__':
