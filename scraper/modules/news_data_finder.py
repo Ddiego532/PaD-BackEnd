@@ -1,5 +1,6 @@
 from .news_soup import NewsSoup
 from .helpers import get_tags_from_str
+from .date_parser import parse_date
 
 class NewsDataFinder:
     def __init__(self, soup : NewsSoup, selector : dict):
@@ -112,26 +113,45 @@ class NewsDataFinder:
 
         return source
     
+    def try_to_find_essential_part(self, element : str):
+        part = self.__get_text_data_element(element)
+
+        if not part:
+            return self.soup.get_meta_og_content(element)
+        
+        return self.find_text_data_element(element)
+        
+    
     def find_title(self):
-        return self.find_text_data_element("title")
+        return self.try_to_find_essential_part("title")
+        
+        # return self.find_text_data_element("title")
 
     def find_subtitles(self):
-        return self.find_text_data_element("subtitle")
+        # return self.find_text_data_element("subtitle")
+        return self.try_to_find_essential_part("description")
     
     # habrá que modificar esta funcion por los requisitos.
     # esta funcion tiene un trato diferente ya que usaremos funciones para poder un buen parseo.
     def find_date(self):
-        meta_content = self.soup.get_meta_article_content("published_time")
+        full_date = self.soup.get_meta_article_content("published_time")
         
+        if full_date is None:
+            full_date = self.soup.get_schema_attribute("datePublished")
+         # chv, cooperativa, meganoticias, elmostrador, t13 lo tienen via script/json.
+        
+        if full_date:
+            # limpiar la basura del texto.
+            stripped_date = full_date.strip('\" ,')
+            # obtener el yy-mm-dd
+            stripped_date = full_date[:10]
+            # asumiendo que la fecha tiene este formato yy-mm-dd
+            return parse_date(stripped_date, "%Y-%m-%d")
     
-        # chv, cooperativa, meganoticias, elmostrador, t13 lo tienen via script/json.
-        script_content = self.soup.get_schema_attribute("datePublished")
-        
         # si no nada, hacemos parseo custom.
-        date_stuff = self.__get_text_data_element("date")
+        last_date = self.find_text_data_element("date")
+        # para obtener las cosas del selector, incluye el parsing_form.
+        selector = self.__get_text_data_element("date")
+        chilean_date = parse_date(last_date, selector["parsing_form"])
         
-        # AÑADIR EL PARSER CUSTOM.
-        # pass
-        # return self.find_text_data_element("date")
-
-
+        return chilean_date

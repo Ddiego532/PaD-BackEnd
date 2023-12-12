@@ -51,7 +51,13 @@ ELMOSTRADOR_NEWS_SELECTOR = {
 TVN_SELECTOR = {
     "text_data": {
         "title": {"tag": "h1", "identifier_attrib": "id", "attrib_value": "#contenido-ppal"},
-        "date": {"tag": "p", "identifier_attrib": "class", "attrib_value": "fecha"},
+        "date": {
+            "tag": "p", 
+            "identifier_attrib": "class", 
+            "attrib_value": "fecha",
+            # mirenme soy diferente!!!!!
+            "parsing_form": "%A %d de %B de %Y",
+        },
         "subtitle": {"tag": "p", "identifier_attrib": "class", "attrib_value": "baj"},
     },
 
@@ -241,20 +247,9 @@ ASCOM_SELECTOR = {
     }
 }
 
+# porque cambiaste!!!!!
 ADNCL_SELECTOR = {
     "text_data": {
-        "title": {
-            "tag": "h1",
-            "identifier_attrib": "class",
-            "attrib_value": "the-single__title",
-        },
-
-        "subtitle": {
-            "tag": "div",
-            "identifier_attrib": "class",
-            "attrib_value": "the-single__excerpt"
-        },
-
         "date": {
             "tag": "script",
             "schema_attrib": "datePublished"
@@ -264,7 +259,7 @@ ADNCL_SELECTOR = {
     "content": {
         "tag": "div",
         "identifier_attrib": "class",
-        "attrib_value": "the-single-content__body",
+        "attrib_value": "cnt-txt",
     },
 
     "irrelevant_tags": {
@@ -316,14 +311,14 @@ CHILEVISION_SELECTOR = {
 ADNCL= {
     "url": "https://www.adnradio.cl/noticias/politica/",
     # "category/politica/",
-    "tag": "div",
+    "tag": "main",
     "identifier_attrib": "class",
-    "attrib_value": "main__container container",
+    "attrib_value": "section",
     "skipeable_info": {
         "tag": "nav",
         "class": "b-n-1"
     },
-    "forbidden_paths": ["/audio/", "/autor/"],
+    "forbidden_paths": ["/audio/", "/autor/", "/podcast/", "/lo-ultimo/"],
     "news_selector": ADNCL_SELECTOR
 }
 
@@ -437,6 +432,7 @@ CHILEVISION = {
     "tag": "div",
     "identifier_attrib": "class",
     "attrib_value": "category-list",
-    "forbidden_paths": ["/reportajes/"],
+    # no farandulas
+    "forbidden_paths": ["/reportajes/", "/show/"],
     "news_selector": CHILEVISION_SELECTOR
 }

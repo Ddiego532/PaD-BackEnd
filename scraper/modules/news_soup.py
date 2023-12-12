@@ -42,6 +42,8 @@ class NewsSoup(BeautifulSoup):
         """
         json_app = self.find("script", {"type": "application/ld+json"})
         data : dict = None
+        
+        text = ""
 
         if json_app:
             text = json_app.text
@@ -64,6 +66,9 @@ class NewsSoup(BeautifulSoup):
             atributo : str | None - El valor del atributo.
         """
         schema, status = self.get_schema()
+        
+        if isinstance(schema, list):
+            schema = schema[0]
 
         if status == MALFORMED_JSON:
             return get_kv_by_string(attrib, schema)

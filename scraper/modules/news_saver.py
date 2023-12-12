@@ -203,6 +203,7 @@ class NewsSaver:
         soup = NewsSoup(markup=conn_data.text, from_encoding="utf-8")
 
         # important thing if we want to get the proper data.
+        print("Current source: ", conn_data.url)
         finder = NewsDataFinder(soup, self.news_selector)
 
         # can't save.
