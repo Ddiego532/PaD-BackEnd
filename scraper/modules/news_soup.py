@@ -168,3 +168,14 @@ class NewsSoup(BeautifulSoup):
             content : str | None - El contenido de la etiqueta meta seleccionada.
         """
         return self.get_meta_content("property", f"og:{prop}")
+    
+    def get_meta_article_content(self, prop : str):
+        """
+        Busca en las etiquetas meta que posean una propiedad de tipo "article".
+
+        :params:
+            property : str - La propiedad a buscar.
+        returns:
+            content : str | None - El contenido de la etiqueta meta seleccionada.
+        """
+        return self.get_meta_content("property", f"article:{prop}")

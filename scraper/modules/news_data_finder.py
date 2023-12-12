@@ -104,7 +104,9 @@ class NewsDataFinder:
     def find_subtitles(self):
         return self.find_text_data_element("subtitle")
     
+    # habrá que modificar esta funcion por los requisitos.
     def find_date(self):
-        return self.find_text_data_element("date")
+        pass
+        # return self.find_text_data_element("date")
 
 
