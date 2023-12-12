@@ -1,13 +1,18 @@
 # PaD-BackEnd
 BackEnd del sistema de recuperacion de informacion Politica al Dia
 
+## Urls
+```/all_news/```
+```/get_by_polarity/{polarity}```
+
+Siendo Positivo, Neutro y Negativo las 3 posibles polaridades.
+
+Vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para obtener los resultados de la api.
+
 ## Para el desarrollo del proyecto
-Para la realizacion del proyecto estaremos desarrollando una api rest con django y django rest framework haciendo uso de una base de datos noSQL (MongoDB) para el almacenamiento de archivos en caso de que no resulte con archivos locales. 
+Para la realizacion del proyecto estaremos desarrollando una api rest con FastApi. 
 
 Es necesario clonar el repositorio ya sea con Git o con GitHub Desktop y abrir el directorio con su editor de texto favorito.
-
-## Carpeta raiz del proyecto django
-La carpeta raiz del proyecto corresponde a ```Politica Al Dia``` en esta se encuentran los archivos de configuracion relacionados al proyecto django. Algo importante a notar es el archivo Settings donde se encuentra las lineas de configuracion para la base de datos. 
 
 ## Creación del Virtualenv
 
@@ -42,29 +47,11 @@ pip install -r requirements.txt
 ```
 Con esto ya tendriamos todo lo necesario para trabajar en el proyecto.
 
-## Realizar las migraciones y correr el proyecto.
-No es necesaria realizar las migraciones para que corra el proyecto, pero cuando se trabaja con base de datos si es necesaria.
-En nuestro caso al intentar trabajar con archivos locales no es necesario pero en casos a futuro si llegasemos a trabajar con base de datos nosql si sera requerido.
-Para realizar las migraciones en una consola o terminal ingresar el siguiente comando:
-```
-python manage.py makemigrations
-```
-```
-python manage.py migrate
-```
-Con estos conmandos se crean los archivos que se van a migrar y finalmente se migran a la base de datos
-
 ## Correr el proyecto
 Para correr el proyecto es necesario introducir lo siguiente en la terminal de comandos:
 ```
-python manage.py runserver
+uvicorn api.main_api:app
 ```
 Se le comunicara por la misma terminal la direccion local para ingresar.
-
-## Urls
-```/noticias/```
-```/noticias/news```
-
-URLs iniciales, por lo que una vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para acceder a la api.
 
 
