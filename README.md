@@ -25,7 +25,7 @@ Siendo Positivo, Neutro y Negativo las 3 posibles polaridades.
 
 Para la query, se debe ingresar el string de busqueda entre los corchetes. 
 
-```/query/{query}``` retorna el index del documento y el ranking
+```/query/{query}``` retorna el index del documento y el ranking.
 ```json/{query}``` retorna las noticias segun el ranking.
 
 Vez inciado y corriendo el proyecto es necesario añadir a la url esta direccion para obtener los resultados de la api.
