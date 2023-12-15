@@ -109,4 +109,4 @@ def execute_query(query):
   return {"query": f"Query lista: {query}", "response": f"{data}"}
 
 
-uvicorn.run(app, host="127.0.0.1", port=12000)
+uvicorn.run(app, host="0.0.0.0", port=12000)
