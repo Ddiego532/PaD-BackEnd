@@ -59,19 +59,18 @@ def get_json():
     news_dict = get_news_dict()
     return news_dict
 
-@app.get("/json/{query}")
+
+@app.get("/search/{query}")
 def execute_query(query):
     data_str = client_program(query)
     data = ast.literal_eval(data_str)
     news_dict = get_news_dict()
-    #print(f"Data received from server: {data}")
 
-    response_data = []  # Initialize response_data before the loop
+    response_data = []
 
     for tuple_item in data:
         key = str(tuple_item[0])
-        # print(f"Checking key: {key}")
-        # Convert key to integer
+
         try:
             key = int(key)
         except ValueError:
@@ -80,19 +79,12 @@ def execute_query(query):
 
         if key in news_dict:
             matched_news = news_dict[key]
-            #print(f"Match found for key {key}. Matched News: {matched_news}")
-
-            response_data.append({
-                "query": f"Query lista: {query}",
-                #"response": f"{data}",
-                "matched_news": matched_news
-            })
+            response_data.append(matched_news)
         else:
             print(f"No match found for key {key}")
 
-    #print(f"Keys in data: {[str(item[0]) for item in data]}")
-    #print(f"Final response_data: {response_data}")
-    return {"data": response_data}
+    return response_data
+
 
 @app.get("/get_by_polarity/{polarity}")
 async def get_by_polarity(polarity: str):
@@ -102,11 +94,6 @@ async def get_by_polarity(polarity: str):
     if not results:
         raise HTTPException(status_code=404, detail="No se encontraron elementos con esa polaridad")
     return results
-
-@app.get("/query/{query}")
-def execute_query(query):
-  data = client_program(query)
-  return {"query": f"Query lista: {query}", "response": f"{data}"}
 
 
 uvicorn.run(app, host="0.0.0.0", port=12000)
