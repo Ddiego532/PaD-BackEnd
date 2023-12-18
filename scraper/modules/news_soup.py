@@ -20,7 +20,7 @@ class NewsSoup(BeautifulSoup):
     como obtener los esquemas JSON y encontrar elementos por criterios.
     """
     def __init__(self, markup: str | bytes = "", builder: TreeBuilder | type[TreeBuilder] | None = None, 
-                parse_only: SoupStrainer | None = None, from_encoding: str | None = None, exclude_encodings: Sequence[str] | None = None, 
+                parse_only: SoupStrainer | None = None, from_encoding: str | None = 'utf-8', exclude_encodings: Sequence[str] | None = None, 
                 element_classes: dict[type[PageElement], type] | None = None, **kwargs) -> None:
         """
         Constructor del parseador de noticias.

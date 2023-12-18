@@ -11,6 +11,7 @@ def ejecutar_archivo(ruta):
 if __name__ == "__main__":
     carpetas_y_archivos = [
         "scraper/main_scraper.py",
+        "scraper/normalize_scraper.py",
         "indexacion/json_to_txt.py",
         "indexacion/mapreduce.py",
         "ranking/doc_len.py"

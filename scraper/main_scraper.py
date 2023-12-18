@@ -45,4 +45,4 @@ for elemento in ref_list:
     polaridad = analizar_polaridad(titulo)
     elemento["polarity"] = polaridad
 
-create_json_file("all_news", ref_list)
+create_json_file("pre_all_news", ref_list)
